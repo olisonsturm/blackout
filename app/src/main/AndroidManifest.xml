@@ -9,16 +9,16 @@
         android:roundIcon="@drawable/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Blackout">
-
+        <activity android:name=".view.LobbyActivity"></activity>
         <activity
             android:name=".view.LoadingActivity"
             android:theme="@style/Theme.Blackout.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>
