@@ -1,8 +1,10 @@
-package me.olisonsturm.blackout;
+package me.olisonsturm.blackout.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import me.olisonsturm.blackout.R;
 
 public class LoadingActivity extends AppCompatActivity {
 
