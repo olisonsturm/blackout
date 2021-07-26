@@ -12,8 +12,6 @@ import me.olisonsturm.blackout.R;
 public class LobbyActivity extends AppCompatActivity {
     private DrawerLayout drawer;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
