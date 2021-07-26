@@ -19,4 +19,8 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="Theme.Blackout.ActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
 </resources>
