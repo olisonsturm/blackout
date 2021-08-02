@@ -7,7 +7,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.os.Bundle;
-import android.view.ViewGroup;
 
 import me.olisonsturm.blackout.R;
 
@@ -22,8 +21,6 @@ public class LobbyActivity extends AppCompatActivity {
 
         drawer = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.myToolbar);
-        setSupportActionBar(toolbar);
-
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -39,6 +36,7 @@ public class LobbyActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
 
 
 }
