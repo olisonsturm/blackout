@@ -23,10 +23,6 @@
             android:name=".view.LobbyActivity"
             android:theme="@style/Theme.Blackout" />
 
-        <activity
-            android:name=".view.DrawerActivity"
-            android:theme="@style/Theme.Blackout.NoActionBar" />
-
 
     </application>
 
