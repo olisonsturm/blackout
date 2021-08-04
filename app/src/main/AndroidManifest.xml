@@ -10,7 +10,7 @@
         android:theme="@style/Theme.Blackout">
 
         <activity
-            android:name=".view.LoadingActivity"
+            android:name=".view.activitys.LoadingActivity"
             android:theme="@style/Theme.Blackout.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,7 +20,7 @@
         </activity>
 
         <activity
-            android:name=".view.LobbyActivity"
+            android:name=".view.activitys.LobbyActivity"
             android:theme="@style/Theme.Blackout.NoActionBar" />
 
 

@@ -1,4 +1,4 @@
-package me.olisonsturm.blackout.view;
+package me.olisonsturm.blackout.view.activitys;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -13,13 +13,14 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
-import me.olisonsturm.blackout.LobbyFragment;
+import me.olisonsturm.blackout.view.fragments.PlayerFragment;
 import me.olisonsturm.blackout.R;
-import me.olisonsturm.blackout.SettingsFragment;
-import me.olisonsturm.blackout.SpieleFragment;
-import me.olisonsturm.blackout.StatisticsFragment;
+import me.olisonsturm.blackout.view.fragments.SettingsFragment;
+import me.olisonsturm.blackout.view.fragments.GamingFragment;
+import me.olisonsturm.blackout.view.fragments.StatisticsFragment;
 
 public class LobbyActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
     private DrawerLayout drawer;
     Toolbar toolbar;
     NavigationView navigationView;
@@ -35,13 +36,12 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
 
         navigationView.setNavigationItemSelectedListener(this);
 
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LobbyFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PlayerFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_lobby);
         }
 
@@ -51,11 +51,11 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_lobby:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LobbyFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PlayerFragment()).commit();
                 break;
 
-            case R.id.nav_games:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SpieleFragment()).commit();
+            case R.id.nav_gaming:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new GamingFragment()).commit();
                 break;
 
             case R.id.nav_statistics:
@@ -69,10 +69,7 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
             case R.id.nav_appinfo:
                 Toast.makeText(this, "Daten über die App", Toast.LENGTH_SHORT).show();
                 break;
-
-
         }
-
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

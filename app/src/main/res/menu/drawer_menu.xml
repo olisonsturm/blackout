@@ -9,9 +9,9 @@
             android:icon="@drawable/ic_person"
             android:title="@string/lobby" />
         <item
-            android:id="@+id/nav_games"
-            android:icon="@drawable/ic_forgames"
-            android:title="@string/games" />
+            android:id="@+id/nav_gaming"
+            android:icon="@drawable/ic_gaming"
+            android:title="@string/gaming" />
         <item
             android:id="@+id/nav_statistics"
             android:icon="@drawable/ic_placeholder_statistics"

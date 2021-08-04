@@ -1,4 +1,4 @@
-package me.olisonsturm.blackout.view;
+package me.olisonsturm.blackout.view.activitys;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import me.olisonsturm.blackout.R;
 
 public class LoadingActivity extends AppCompatActivity {
-
 
     ImageView startImage;
 
