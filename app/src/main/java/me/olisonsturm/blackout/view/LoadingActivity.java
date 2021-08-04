@@ -14,8 +14,6 @@ public class LoadingActivity extends AppCompatActivity {
 
     ImageView startImage;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +28,6 @@ public class LoadingActivity extends AppCompatActivity {
         new Handler().postDelayed(() -> {
             startActivity(new Intent(this, LobbyActivity.class));
             finish();
-        }, 1000);
+        }, 2000);
     }
 }
