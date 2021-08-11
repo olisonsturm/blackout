@@ -34,16 +34,11 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
     static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     Toolbar toolbar;
     NavigationView navigationView;
-    MenuItem bluetoothCheck;
-    MenuItem bluetoothIcon;
-    BluetoothAdapter bluetoothAdapter = null;
+    //MenuItem bluetoothIcon;
+    BluetoothAdapter bluetoothAdapter;
     BluetoothSocket bluetoothSocket;
     InputStream inputStream;
     OutputStream outputStream;
-    Thread workerThread;
-    byte[] readBuffer;
-    int readBufferPosition;
-    volatile boolean stopWorker;
     String deviceName = null;
     String deviceAddress = null;
     private DrawerLayout drawer;
@@ -57,14 +52,16 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
         drawer = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.myToolbar);
         navigationView = findViewById(R.id.nav_view);
-        bluetoothCheck = findViewById(R.id.bluetoothCheck);
-        bluetoothIcon = findViewById(R.id.bluetoothCheck);
+        //bluetoothIcon =  (MenuItem) findViewById(R.id.bluetoothCheck);
+
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         new ConnectionInfo(false);
-        new ConnectBT().execute();
+
 
 
         //check to set bluetooth Icon
+        /*
         if (!bluetoothAdapter.isEnabled()) {
             bluetoothIcon.setIcon(R.drawable.ic_bluetooth_off);
         } else {
@@ -72,7 +69,7 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
         }
         if (bluetoothAdapter.isDiscovering()) {
             bluetoothIcon.setIcon(R.drawable.ic_bluetooth_discovering);
-        }
+        }*/
 
 
         navigationView.setNavigationItemSelectedListener(this);
@@ -95,13 +92,13 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
                         if (!bluetoothAdapter.isEnabled()) {
                             Toast.makeText(LobbyActivity.this, "Aktiviere Bluetooth", Toast.LENGTH_SHORT).show();
                             bluetoothAdapter.enable();
-                            bluetoothIcon.setIcon(R.drawable.ic_bluetooth_on);
+                            //bluetoothIcon.setIcon(R.drawable.ic_bluetooth_on);
                         }
 
                         if (!bluetoothAdapter.isDiscovering()) {
                             Toast.makeText(LobbyActivity.this, "mache Gerät sichtbar", Toast.LENGTH_SHORT).show();
                             bluetoothAdapter.startDiscovery();
-                            bluetoothIcon.setIcon(R.drawable.ic_bluetooth_discovering);
+                            //bluetoothIcon.setIcon(R.drawable.ic_bluetooth_discovering);
                         }
                         BottomSheetBluetooth bottomSheetBluetooth = new BottomSheetBluetooth();
                         bottomSheetBluetooth.show(getSupportFragmentManager(), "exampleBottomSheet");
@@ -160,6 +157,9 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
     public void onItemClicked(String name, String address) {
         deviceName = name;
         deviceAddress = address;
+
+        //Toast.makeText(this, "Device: " + deviceName + ", " + deviceAddress, Toast.LENGTH_LONG).show();
+        new ConnectBT().execute();
     }
 
 
@@ -168,7 +168,7 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
 
         @Override
         protected void onPreExecute() {
-            progress = ProgressDialog.show(LobbyActivity.this, "Connecting...", "please wait!!!"); //show a progress dialog
+            progress = ProgressDialog.show(LobbyActivity.this, "Connecting to " + deviceName, "please wait!!!"); //show a progress dialog
         }
 
         @Override
@@ -196,19 +196,20 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
 
             if (!ConnectSuccess) {
                 Toast.makeText(LobbyActivity.this, "Connection Failed. Is it a SPP Bluetooth? Try again!", Toast.LENGTH_LONG).show();
-                if (bluetoothAdapter.isEnabled()) {
+                /*if (bluetoothAdapter.isEnabled()) {
                     bluetoothIcon.setIcon(R.drawable.ic_bluetooth_on);
                 }
                 if (bluetoothAdapter.isDiscovering()) {
                     bluetoothIcon.setIcon(R.drawable.ic_bluetooth_discovering);
-                }
-            } else {
-                Toast.makeText(LobbyActivity.this, "Connected", Toast.LENGTH_SHORT).show();
-                ConnectionInfo.setConnected(true);
-                bluetoothIcon.setIcon(R.drawable.ic_bluetooth_off);
-            }
-            progress.dismiss();
+                }*/
+} else{
+        Toast.makeText(LobbyActivity.this,"Connected",Toast.LENGTH_SHORT).show();
+        ConnectionInfo.setConnected(true);
+        //bluetoothIcon.setIcon(R.drawable.ic_bluetooth_off);
         }
-    }
+        progress.dismiss();
+        }
+        }
+
 
 }

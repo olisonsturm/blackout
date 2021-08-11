@@ -13,14 +13,14 @@ import java.util.ArrayList;
 
 import me.olisonsturm.blackout.R;
 
-public class ListAdapter extends RecyclerView.Adapter<ListAdapter.listViewHolder> {
+public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.listViewHolder> {
 
-    private static final String TAG = "ListAdapter";
+    private static final String TAG = "DeviceListAdapter";
     private final ArrayList<DeviceInfo> myList;
     private final OnNoteListener onNoteListener;
 
 
-    public ListAdapter(ArrayList<DeviceInfo> list, OnNoteListener onNoteListener) {
+    public DeviceListAdapter(ArrayList<DeviceInfo> list, OnNoteListener onNoteListener) {
         this.myList = list;
         this.onNoteListener = onNoteListener;
     }

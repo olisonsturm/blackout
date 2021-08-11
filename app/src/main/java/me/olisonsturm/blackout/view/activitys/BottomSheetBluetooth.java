@@ -21,13 +21,14 @@ import java.util.Set;
 
 import me.olisonsturm.blackout.R;
 
-public class BottomSheetBluetooth extends BottomSheetDialogFragment implements me.olisonsturm.blackout.view.activitys.ListAdapter.OnNoteListener {
+public class BottomSheetBluetooth extends BottomSheetDialogFragment implements DeviceListAdapter.OnNoteListener {
 
 
     RecyclerView deviceList;
     RecyclerView.LayoutManager layoutManager;
-    BluetoothAdapter bluetoothAdapter = null;
-    ArrayList<DeviceInfo> list;
+    BluetoothAdapter bluetoothAdapter;
+    ArrayList<DeviceInfo> devicelist;
+
 
     private Set<BluetoothDevice> pairedDevices;
     private ConnectionInfo connectionInfo;
@@ -44,21 +45,24 @@ public class BottomSheetBluetooth extends BottomSheetDialogFragment implements m
         deviceList.setLayoutManager(layoutManager);
         deviceList.setHasFixedSize(true);
 
-        list = new ArrayList<>();
-        pairedDevices = bluetoothAdapter.getBondedDevices();
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-        if (pairedDevices.size() > 0) {
-            for (BluetoothDevice bluetoothDevice : pairedDevices) {
-                list.add(new DeviceInfo(bluetoothDevice.getName(), bluetoothDevice.getAddress()));
+
+        if (bluetoothAdapter.isEnabled() && bluetoothAdapter.isDiscovering()) {
+            devicelist = new ArrayList<>();
+            pairedDevices = bluetoothAdapter.getBondedDevices();
+
+            if (pairedDevices.size() > 0) {
+                for (BluetoothDevice bluetoothDevice : pairedDevices) {
+                    devicelist.add(new DeviceInfo(bluetoothDevice.getName(), bluetoothDevice.getAddress()));
+                }
+            } else {
+                Toast.makeText(getContext(), "Keine gekoppelten Geräte gefunden", Toast.LENGTH_SHORT);
             }
-        } else {
-            Toast.makeText(getContext(), "Keine gekoppelten Geräte gefunden", Toast.LENGTH_SHORT);
+
+            DeviceListAdapter adapter = new DeviceListAdapter(devicelist, this);
+            deviceList.setAdapter(adapter);
         }
-
-        ListAdapter adapter = new ListAdapter (list, BottomSheetBluetooth.this);
-        deviceList.setAdapter(adapter);
-
-
         return v;
     }
 
@@ -79,8 +83,8 @@ public class BottomSheetBluetooth extends BottomSheetDialogFragment implements m
     public void onNoteClick(int position) {
         Toast.makeText(getContext(),"Connecting to Device", Toast.LENGTH_SHORT);
 
-        String name = list.get(position).getName();
-        String address = list.get(position).getAddress();
+        String name = devicelist.get(position).getName();
+        String address = devicelist.get(position).getAddress();
 
         mListener.onItemClicked(name, address);
         dismiss();
