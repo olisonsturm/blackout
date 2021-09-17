@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -20,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import me.olisonsturm.blackout.R;
+import me.olisonsturm.blackout.view.Infos.ConnectionInfo;
+import me.olisonsturm.blackout.view.Infos.DeviceInfo;
 
 public class BottomSheetBluetooth extends BottomSheetDialogFragment implements DeviceListAdapter.OnNoteListener {
 

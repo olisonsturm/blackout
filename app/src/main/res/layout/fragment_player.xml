@@ -1,32 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <com.cesar.materialcomponents.Banner
-            android:id="@+id/banner"
+        <ListView
+            android:id="@+id/playerListe"
+            android:layout_width="match_parent"
+            android:minHeight="200dp"
+            android:layout_height="500dp" />
+
+        <EditText
+            android:id="@+id/eingabe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ccc"
-            app:bannerBackgroundColor="@color/weird_green"
-            app:contentText="Your password was updated on another device. Please sign in again"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:leftButtonText="Continue as Guest"
-            app:rightButtonText="Sign in" />
+            android:inputType="text" />
 
-        <TextView
+        <Button
+            android:id="@+id/btn_add"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="Player-Fragment"
-            android:textSize="30dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:hint="@string/hinzufügen"
+            android:layout_height="wrap_content"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

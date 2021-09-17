@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import me.olisonsturm.blackout.R;
+import me.olisonsturm.blackout.view.Infos.DeviceInfo;
 
 public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.listViewHolder> {
 

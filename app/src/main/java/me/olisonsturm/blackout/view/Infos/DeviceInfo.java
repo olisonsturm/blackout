@@ -1,4 +1,4 @@
-package me.olisonsturm.blackout.view.activitys;
+package me.olisonsturm.blackout.view.Infos;
 
 public class DeviceInfo {
     String name;
