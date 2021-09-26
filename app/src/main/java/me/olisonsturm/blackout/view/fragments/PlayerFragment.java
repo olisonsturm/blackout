@@ -44,11 +44,12 @@ public class PlayerFragment extends Fragment {
         btnAdd.setOnClickListener(v -> {
             String name = input.getText().toString();
             if (TextUtils.isEmpty(name)) {
-                Toast.makeText(view.getContext(), "Bitte spielername eingeben", Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext(), "Bitte Spielername eingeben", Toast.LENGTH_SHORT).show();
             } else {
                 playerList.add(name);
                 adapter.notifyDataSetChanged();
             }
+            input.setText("");
         });
 
         return view;
