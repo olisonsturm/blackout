@@ -28,7 +28,6 @@ import me.olisonsturm.blackout.R;
 import me.olisonsturm.blackout.view.Infos.ConnectionInfo;
 import me.olisonsturm.blackout.view.fragments.GamingFragment;
 import me.olisonsturm.blackout.view.fragments.PlayerFragment;
-import me.olisonsturm.blackout.view.fragments.SettingsFragment;
 import me.olisonsturm.blackout.view.fragments.StatisticsFragment;
 
 public class LobbyActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, BottomSheetBluetooth.BottomSheetBluetoothListener {
@@ -131,7 +130,7 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
                 break;
 
             case R.id.nav_settings:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
+                Toast.makeText(this, "App Settings", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.nav_appinfo:

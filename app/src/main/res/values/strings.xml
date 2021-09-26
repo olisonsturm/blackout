@@ -12,6 +12,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="more">more</string>
     <string name="menu">Menu</string>
-    <string name="bluetooth">Bluetooth</string>
+    <string name="bluetooth">BLUETOOTH</string>
     <string name="hinzufügen">Hinzufügen</string>
 </resources>
