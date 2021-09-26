@@ -1,5 +1,6 @@
 package me.olisonsturm.blackout.view.activitys;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -45,6 +46,7 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
     private DrawerLayout drawer;
     private ProgressDialog progress;
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +60,6 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         new ConnectionInfo(false);
-
 
 
         //check to set bluetooth Icon
@@ -85,34 +86,31 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
         }
 
 
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.bluetoothCheck:
-                        if (!bluetoothAdapter.isEnabled()) {
-                            Toast.makeText(LobbyActivity.this, "Aktiviere Bluetooth", Toast.LENGTH_SHORT).show();
-                            bluetoothAdapter.enable();
-                            //bluetoothIcon.setIcon(R.drawable.ic_bluetooth_on);
-                        }
+        toolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.bluetoothCheck:
+                    if (!bluetoothAdapter.isEnabled()) {
+                        Toast.makeText(LobbyActivity.this, "Aktiviere Bluetooth", Toast.LENGTH_SHORT).show();
+                        bluetoothAdapter.enable();
+                        //bluetoothIcon.setIcon(R.drawable.ic_bluetooth_on);
+                    }
 
-                        if (!bluetoothAdapter.isDiscovering()) {
-                            Toast.makeText(LobbyActivity.this, "mache Gerät sichtbar", Toast.LENGTH_SHORT).show();
-                            bluetoothAdapter.startDiscovery();
-                            //bluetoothIcon.setIcon(R.drawable.ic_bluetooth_discovering);
-                        }
-                        BottomSheetBluetooth bottomSheetBluetooth = new BottomSheetBluetooth();
-                        bottomSheetBluetooth.show(getSupportFragmentManager(), "exampleBottomSheet");
-                        break;
+                    if (!bluetoothAdapter.isDiscovering()) {
+                        Toast.makeText(LobbyActivity.this, "mache Gerät sichtbar", Toast.LENGTH_SHORT).show();
+                        bluetoothAdapter.startDiscovery();
+                        //bluetoothIcon.setIcon(R.drawable.ic_bluetooth_discovering);
+                    }
+                    BottomSheetBluetooth bottomSheetBluetooth = new BottomSheetBluetooth();
+                    bottomSheetBluetooth.show(getSupportFragmentManager(), "exampleBottomSheet");
+                    break;
 
-                    case R.id.more:
-                        Toast.makeText(LobbyActivity.this, "More", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-
-
-                return false;
+                case R.id.more:
+                    Toast.makeText(LobbyActivity.this, "More", Toast.LENGTH_SHORT).show();
+                    break;
             }
+
+
+            return false;
         });
     }
 
@@ -203,14 +201,14 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
                 if (bluetoothAdapter.isDiscovering()) {
                     bluetoothIcon.setIcon(R.drawable.ic_bluetooth_discovering);
                 }*/
-} else{
-        Toast.makeText(LobbyActivity.this,"Connected",Toast.LENGTH_SHORT).show();
-        ConnectionInfo.setConnected(true);
-        //bluetoothIcon.setIcon(R.drawable.ic_bluetooth_off);
+            } else {
+                Toast.makeText(LobbyActivity.this, "Connected", Toast.LENGTH_SHORT).show();
+                ConnectionInfo.setConnected(true);
+                //bluetoothIcon.setIcon(R.drawable.ic_bluetooth_off);
+            }
+            progress.dismiss();
         }
-        progress.dismiss();
-        }
-        }
+    }
 
 
 }
