@@ -28,35 +28,29 @@ public class PlayerFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstance){
-        return inflater.inflate(R.layout.fragment_player, container, false);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstance) {
+        View view = inflater.inflate(R.layout.fragment_player, container, false);
 
-         playerListView = findViewById(R.id.playerListe);
-         btnAdd = findViewById(R.id.btn_add);
-         eingabe = findViewById(R.id.eingabe);
+        playerListView = view.findViewById(R.id.playerListe);
+        btnAdd = view.findViewById(R.id.btn_add);
+        eingabe = view.findViewById(R.id.eingabe);
 
-         btnAdd.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 String text = eingabe.getText().toString(); //Try????
-                 if (text == null){
-                     Toast.makeText(this, "Bitte spielername eingeben", Toast.LENGTH_SHORT).show();
-                 } else {
-                     playerList.add(text);
-                 }
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String text = eingabe.getText().toString(); //Try????
+                if (text == null) {
+                    Toast.makeText(this, "Bitte spielername eingeben", Toast.LENGTH_SHORT).show();
+                } else {
+                    playerList.add(text);
+                }
 
-                 ArrayAdapter playerListAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, playerList);
-                 playerListView.setAdapter(playerListAdapter);
-             }
-         });
+                ArrayAdapter playerListAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, playerList);
+                playerListView.setAdapter(playerListAdapter);
+            }
+        });
 
-
-
-
-
-
-
-
+        return view;
     }
 
 }
