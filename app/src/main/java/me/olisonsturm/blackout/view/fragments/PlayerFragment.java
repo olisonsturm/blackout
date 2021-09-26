@@ -1,6 +1,7 @@
 package me.olisonsturm.blackout.view.fragments;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,40 +12,43 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import me.olisonsturm.blackout.R;
 
 public class PlayerFragment extends Fragment {
 
     Button btnAdd;
-    EditText eingabe;
+    EditText input;
     ListView playerListView;
-    ArrayList<String> playerList;
 
+    ArrayList<String> playerList;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstance) {
         View view = inflater.inflate(R.layout.fragment_player, container, false);
 
-        playerListView = view.findViewById(R.id.playerListe);
         btnAdd = view.findViewById(R.id.btn_add);
-        eingabe = view.findViewById(R.id.eingabe);
+        input = view.findViewById(R.id.eingabe);
+        playerListView = view.findViewById(R.id.playerList);
+
+        playerList = new ArrayList<String>();
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_list_item_1, android.R.id.text1, playerList);
+        playerListView.setAdapter(adapter);
 
         btnAdd.setOnClickListener(v -> {
-            String text = eingabe.getText().toString(); //Try????
-            if (text == null) {
+            String name = input.getText().toString();
+            if (TextUtils.isEmpty(name)) {
                 Toast.makeText(view.getContext(), "Bitte spielername eingeben", Toast.LENGTH_SHORT).show();
             } else {
-                playerList.add(text);
+                playerList.add(name);
+                adapter.notifyDataSetChanged();
             }
-
-            ArrayAdapter playerListAdapter = new ArrayAdapter(view.getContext(), android.R.layout.simple_list_item_1, playerList);
-            playerListView.setAdapter(playerListAdapter);
         });
 
         return view;

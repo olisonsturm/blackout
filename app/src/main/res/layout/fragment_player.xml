@@ -8,10 +8,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <ListView
-            android:id="@+id/playerListe"
+            android:id="@+id/playerList"
             android:layout_width="match_parent"
             android:minHeight="200dp"
-            android:layout_height="500dp" />
+            android:layout_height="wrap_content" />
 
         <EditText
             android:id="@+id/eingabe"
