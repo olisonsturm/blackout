@@ -35,19 +35,16 @@ public class PlayerFragment extends Fragment {
         btnAdd = view.findViewById(R.id.btn_add);
         eingabe = view.findViewById(R.id.eingabe);
 
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String text = eingabe.getText().toString(); //Try????
-                if (text == null) {
-                    Toast.makeText(this, "Bitte spielername eingeben", Toast.LENGTH_SHORT).show();
-                } else {
-                    playerList.add(text);
-                }
-
-                ArrayAdapter playerListAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, playerList);
-                playerListView.setAdapter(playerListAdapter);
+        btnAdd.setOnClickListener(v -> {
+            String text = eingabe.getText().toString(); //Try????
+            if (text == null) {
+                Toast.makeText(view.getContext(), "Bitte spielername eingeben", Toast.LENGTH_SHORT).show();
+            } else {
+                playerList.add(text);
             }
+
+            ArrayAdapter playerListAdapter = new ArrayAdapter(view.getContext(), android.R.layout.simple_list_item_1, playerList);
+            playerListView.setAdapter(playerListAdapter);
         });
 
         return view;
