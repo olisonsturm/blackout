@@ -209,5 +209,4 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
         }
     }
 
-
 }
