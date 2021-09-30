@@ -14,16 +14,20 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
-import java.util.List;
 
 import me.olisonsturm.blackout.R;
+import me.olisonsturm.blackout.view.activitys.BottomSheetPlayer;
 
-public class PlayerFragment extends Fragment {
+public class PlayerFragment extends Fragment  {
 
     Button btnAdd;
     EditText input;
     ListView playerListView;
+
+    FloatingActionButton addBtn;
 
     ArrayList<String> playerList;
 
@@ -36,10 +40,22 @@ public class PlayerFragment extends Fragment {
         input = view.findViewById(R.id.eingabe);
         playerListView = view.findViewById(R.id.playerList);
 
+        addBtn = view.findViewById(R.id.addNewPlayer);
+
         playerList = new ArrayList<String>();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_list_item_1, android.R.id.text1, playerList);
         playerListView.setAdapter(adapter);
+
+
+
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BottomSheetPlayer bottomSheetPlayer = new BottomSheetPlayer();
+                bottomSheetPlayer.show(getParentFragmentManager(), "BottomSheetPlayer");
+            }
+        });
 
         btnAdd.setOnClickListener(v -> {
             String name = input.getText().toString();

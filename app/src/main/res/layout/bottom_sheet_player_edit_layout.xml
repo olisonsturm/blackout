@@ -18,7 +18,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:gravity="center"
-            android:text="Neuer Spieler"
+            android:text="Bearbeite Spieler"
             android:textSize="30sp" />
 
         <Button
@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
-            android:text="add" />
+            android:text="edit" />
 
     </RelativeLayout>
 
@@ -57,10 +57,10 @@
 
         <ImageButton
             android:id="@+id/genderButton"
+            android:src="@drawable/ic_bluetooth_connected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/ic_bluetooth_connected" />
+            android:layout_alignParentRight="true" />
 
     </RelativeLayout>
 
