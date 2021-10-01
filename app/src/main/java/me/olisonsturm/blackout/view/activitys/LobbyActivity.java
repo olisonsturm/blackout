@@ -64,12 +64,12 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
         //check to set bluetooth Icon
         /*
         if (!bluetoothAdapter.isEnabled()) {
-            bluetoothIcon.setIcon(R.drawable.ic_bluetooth_off);
+            bluetoothIcon.setImageResource(R.drawable.ic_bluetooth_off);
         } else {
-            bluetoothIcon.setIcon(R.drawable.ic_bluetooth_on);
+            bluetoothIcon.setImageResource(R.drawable.ic_bluetooth_on);
         }
         if (bluetoothAdapter.isDiscovering()) {
-            bluetoothIcon.setIcon(R.drawable.ic_bluetooth_discovering);
+            bluetoothIcon.setImageResource(R.drawable.ic_bluetooth_discovering);
         }*/
 
 

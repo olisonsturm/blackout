@@ -1,7 +1,5 @@
 package me.olisonsturm.blackout.view.activitys;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -13,14 +11,11 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import java.util.ArrayList;
-
 import me.olisonsturm.blackout.R;
-import me.olisonsturm.blackout.view.Infos.DeviceInfo;
+import me.olisonsturm.blackout.model.Player;
 
 public class BottomSheetPlayer extends BottomSheetDialogFragment {
 
@@ -39,16 +34,31 @@ public class BottomSheetPlayer extends BottomSheetDialogFragment {
         nickName = view.findViewById(R.id.playerNickName);
         realName = view.findViewById(R.id.playerRealName);
 
+        int gender = 0;
+        genderBtn.setImageResource(R.drawable.ic_behindi);
 
         addBtn.setOnClickListener(v -> {
-            String name = nickName.getText().toString();
-            if (TextUtils.isEmpty(name)) {
-                Toast.makeText(view.getContext(), "Bitte Spielerdaten eingeben", Toast.LENGTH_SHORT).show();
+            String nickNameL = nickName.getText().toString();
+            String realNameL = realName.getText().toString();
+
+            if (TextUtils.isEmpty(nickNameL) || TextUtils.isEmpty(realNameL)) {
+                Toast.makeText(view.getContext(), "Bitte alle Spielerdaten eingeben", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(view.getContext(), name, Toast.LENGTH_SHORT).show();
+                Player Player1 = new Player(nickNameL, realNameL, gender);
+                Toast.makeText(view.getContext(), nickNameL + " " + realNameL, Toast.LENGTH_SHORT).show();
             }
             nickName.setText("");
+            realName.setText("");
         });
+
+        /*
+        genderBtn.setOnClickListener(v ->{
+            gender = gender + 1;
+            if (gender == 3){
+                gender = 0;
+            }
+        });*/
+
 
         return view;
     }
