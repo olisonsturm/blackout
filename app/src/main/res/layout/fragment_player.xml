@@ -8,7 +8,7 @@
     <ListView
         android:id="@+id/playerList"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="100dp"
         android:minHeight="200dp" />
 
     <EditText
@@ -18,11 +18,25 @@
         android:hint="Player"
         android:inputType="text" />
 
-    <Button
-        android:id="@+id/btn_add"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/hinzufügen" />
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btn_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/hinzufügen" />
+
+        <Button
+            android:id="@+id/startGameButton"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Start Game ..." />
+
+    </RelativeLayout>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addNewPlayer"

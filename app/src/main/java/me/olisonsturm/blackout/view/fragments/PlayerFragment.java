@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -24,6 +26,7 @@ import me.olisonsturm.blackout.view.activitys.BottomSheetPlayer;
 public class PlayerFragment extends Fragment  {
 
     Button btnAdd;
+    Button continueBtn;
     EditText input;
     ListView playerListView;
 
@@ -37,6 +40,7 @@ public class PlayerFragment extends Fragment  {
         View view = inflater.inflate(R.layout.fragment_player, container, false);
 
         btnAdd = view.findViewById(R.id.btn_add);
+        continueBtn = view.findViewById(R.id.startGameButton);
         input = view.findViewById(R.id.eingabe);
         playerListView = view.findViewById(R.id.playerList);
 
@@ -47,6 +51,13 @@ public class PlayerFragment extends Fragment  {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_list_item_1, android.R.id.text1, playerList);
         playerListView.setAdapter(adapter);
 
+
+        continueBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new GamingFragment()).commit();
+            }
+        });
 
 
         addBtn.setOnClickListener(new View.OnClickListener() {
