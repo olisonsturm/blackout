@@ -23,6 +23,7 @@ public class BottomSheetPlayer extends BottomSheetDialogFragment {
     ImageButton genderBtn;
     EditText nickName;
     EditText realName;
+    int gender = 0;
 
     @Nullable
     @Override
@@ -34,7 +35,7 @@ public class BottomSheetPlayer extends BottomSheetDialogFragment {
         nickName = view.findViewById(R.id.playerNickName);
         realName = view.findViewById(R.id.playerRealName);
 
-        int gender = 0;
+
         genderBtn.setImageResource(R.drawable.ic_behindi);
 
         addBtn.setOnClickListener(v -> {
@@ -46,18 +47,24 @@ public class BottomSheetPlayer extends BottomSheetDialogFragment {
             } else {
                 Player Player1 = new Player(nickNameL, realNameL, gender);
                 Toast.makeText(view.getContext(), nickNameL + " " + realNameL, Toast.LENGTH_SHORT).show();
+                nickName.setText("");
+                realName.setText("");
             }
-            nickName.setText("");
-            realName.setText("");
+
         });
 
-        /*
+
         genderBtn.setOnClickListener(v ->{
             gender = gender + 1;
             if (gender == 3){
                 gender = 0;
             }
-        });*/
+            switch (gender){
+                case 0 : genderBtn.setImageResource(R.drawable.ic_behindi);break;
+                case 1 : genderBtn.setImageResource(R.drawable.ic_behindi);break;
+                case 2 : genderBtn.setImageResource(R.drawable.ic_behindi);break;
+            }
+        });
 
 
         return view;
