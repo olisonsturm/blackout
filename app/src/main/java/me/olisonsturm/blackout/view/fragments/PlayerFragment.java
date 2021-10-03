@@ -51,7 +51,6 @@ public class PlayerFragment extends Fragment  {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_list_item_1, android.R.id.text1, playerList);
         playerListView.setAdapter(adapter);
 
-
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

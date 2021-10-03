@@ -1,24 +1,25 @@
 package me.olisonsturm.blackout.model;
 
 public class Player {
-    int id;
 
-    String nickName;
-    String realName;
-    char firstLetter;
-    int gender;
+    private int id;
 
-    int drinkAmount;
-    int steps;
+    private String nickName;
+    private String realName;
+    private String firstLetter;
+    private int gender;
 
-    int drinkAmountTotal;
-    int gameCount;
-    int score;
+    private int drinkAmount;
+    private int steps;
+
+    private int drinkAmountTotal;
+    private int gameCount;
+    private int score;
 
     public Player(String nickName, String realName, int gender) {
         this.nickName = nickName;
         this.realName = realName;
-        firstLetter = nickName.charAt(0);
+        this.firstLetter = String.valueOf(nickName.charAt(0) + nickName.charAt(1));
     }
 
     public int getId() {
@@ -36,7 +37,7 @@ public class Player {
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
-        firstLetter = nickName.charAt(0);
+        this.firstLetter = String.valueOf(nickName.charAt(0) + nickName.charAt(1));
     }
 
     public String getRealName() {
@@ -48,7 +49,7 @@ public class Player {
     }
 
 
-    public char getFirstLetter() {
+    public String getFirstLetter() {
         return firstLetter;
     }
 
