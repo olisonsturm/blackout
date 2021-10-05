@@ -16,6 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import me.olisonsturm.blackout.R;
 import me.olisonsturm.blackout.model.Player;
+import me.olisonsturm.blackout.util.GlobalData;
 
 public class BottomSheetPlayer extends BottomSheetDialogFragment {
 
@@ -44,8 +45,12 @@ public class BottomSheetPlayer extends BottomSheetDialogFragment {
             if (TextUtils.isEmpty(nickNameL) || TextUtils.isEmpty(realNameL)) {
                 Toast.makeText(view.getContext(), "Bitte alle Spielerdaten eingeben", Toast.LENGTH_SHORT).show();
             } else {
-                Player Player = new Player(nickNameL, realNameL, gender);
-                Toast.makeText(view.getContext(), nickNameL + " " + realNameL, Toast.LENGTH_SHORT).show();
+                Player player = new Player(nickNameL, realNameL, gender);
+
+                GlobalData data = (GlobalData) view.getContext();
+
+                data.getGlobalPlayerArrayList().add(player);
+
                 dismiss();
             }
         });
