@@ -15,8 +15,7 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import me.olisonsturm.blackout.R;
-import me.olisonsturm.blackout.model.playerexampler;
-import me.olisonsturm.blackout.util.GlobalData;
+import me.olisonsturm.blackout.model.Player;
 
 public class BottomSheetPlayer extends BottomSheetDialogFragment {
 
@@ -24,6 +23,7 @@ public class BottomSheetPlayer extends BottomSheetDialogFragment {
     ImageView genderBtn;
     EditText nickName;
     EditText realName;
+    EditText editTextPriority;
     int gender = 0;
 
     @Nullable
@@ -35,22 +35,20 @@ public class BottomSheetPlayer extends BottomSheetDialogFragment {
         genderBtn = view.findViewById(R.id.genderButton);
         nickName = view.findViewById(R.id.playerNickName);
         realName = view.findViewById(R.id.playerRealName);
+        editTextPriority = view.findViewById(R.id.eTPriority);
 
         genderBtn.setImageResource(R.drawable.male);
 
         addBtn.setOnClickListener(v -> {
             String nickNameL = nickName.getText().toString();
             String realNameL = realName.getText().toString();
+            int priority = Integer.parseInt(editTextPriority.getText().toString());
 
             if (TextUtils.isEmpty(nickNameL) || TextUtils.isEmpty(realNameL)) {
                 Toast.makeText(view.getContext(), "Bitte alle Spielerdaten eingeben", Toast.LENGTH_SHORT).show();
             } else {
-                playerexampler player = new playerexampler(nickNameL, realNameL, gender);
-
-                GlobalData data = (GlobalData) view.getContext().getApplicationContext();
-
-                data.getGlobalPlayerArrayList().add(player);
-
+                Player player = new Player(nickNameL,realNameL,gender,priority);
+                playerViewModel.insert(player);
                 dismiss();
             }
         });

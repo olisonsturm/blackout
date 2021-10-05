@@ -44,6 +44,14 @@
         android:gravity="center"
         android:hint="echter Name" />
 
+    <EditText
+        android:id="@+id/eTPriority"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="Priorität"
+        android:inputType="number" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
