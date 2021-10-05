@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -16,14 +16,14 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import me.olisonsturm.blackout.R;
 import me.olisonsturm.blackout.model.Player;
-import me.olisonsturm.blackout.util.GlobalData;
 
 public class BottomSheetPlayer extends BottomSheetDialogFragment {
 
     Button addBtn;
-    ImageButton genderBtn;
+    ImageView genderBtn;
     EditText nickName;
     EditText realName;
+    int gender = 0;
 
     @Nullable
     @Override
@@ -35,32 +35,39 @@ public class BottomSheetPlayer extends BottomSheetDialogFragment {
         nickName = view.findViewById(R.id.playerNickName);
         realName = view.findViewById(R.id.playerRealName);
 
-        genderBtn.setImageResource(R.drawable.ic_behindi);
+        genderBtn.setImageResource(R.drawable.male);
 
         addBtn.setOnClickListener(v -> {
             String nickNameL = nickName.getText().toString();
             String realNameL = realName.getText().toString();
-            int gender = 0;
 
             if (TextUtils.isEmpty(nickNameL) || TextUtils.isEmpty(realNameL)) {
                 Toast.makeText(view.getContext(), "Bitte alle Spielerdaten eingeben", Toast.LENGTH_SHORT).show();
             } else {
-                Player player = new Player(nickNameL, realNameL, gender);
-
-                GlobalData data = (GlobalData) view.getContext();
-
-                data.getGlobalPlayerArrayList().add(player);
+                Player Player = new Player(nickNameL, realNameL, gender);
+                Toast.makeText(view.getContext(), nickNameL + " " + realNameL, Toast.LENGTH_SHORT).show();
+                dismiss();
             }
-            dismiss();
         });
 
-        /*
-        genderBtn.setOnClickListener(v ->{
+
+        genderBtn.setOnClickListener(v -> {
             gender = gender + 1;
-            if (gender == 3){
+            if (gender == 3) {
                 gender = 0;
             }
-        });*/
+            switch (gender) {
+                case 0:
+                    genderBtn.setImageResource(R.drawable.male);
+                    break;
+                case 1:
+                    genderBtn.setImageResource(R.drawable.female);
+                    break;
+                case 2:
+                    genderBtn.setImageResource(R.drawable.divers);
+                    break;
+            }
+        });
 
 
         return view;

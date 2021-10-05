@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 
 import me.olisonsturm.blackout.R;
 import me.olisonsturm.blackout.view.activitys.BottomSheetPlayer;
+import me.olisonsturm.blackout.view.activitys.DeviceListAdapter;
 
 public class PlayerFragment extends Fragment  {
 
@@ -29,6 +31,8 @@ public class PlayerFragment extends Fragment  {
     Button continueBtn;
     EditText input;
     ListView playerListView;
+    RecyclerView playerRecyclerView;
+    RecyclerView.LayoutManager layoutManager;
 
     FloatingActionButton addBtn;
 
@@ -43,6 +47,7 @@ public class PlayerFragment extends Fragment  {
         continueBtn = view.findViewById(R.id.startGameButton);
         input = view.findViewById(R.id.eingabe);
         playerListView = view.findViewById(R.id.playerList);
+        playerRecyclerView = view.findViewById(R.id.playerListe);
 
         addBtn = view.findViewById(R.id.addNewPlayer);
 

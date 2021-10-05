@@ -50,9 +50,6 @@ public class BottomSheetBluetooth extends BottomSheetDialogFragment implements D
 
         devices = new ArrayList<>();
 
-        DeviceListAdapter adapter = new DeviceListAdapter(devices, this);
-        deviceRecyclerView.setAdapter(adapter);
-
         pairedDevices = bluetoothAdapter.getBondedDevices();
 
         if (pairedDevices.size() > 0) {
@@ -62,6 +59,10 @@ public class BottomSheetBluetooth extends BottomSheetDialogFragment implements D
         } else {
             Toast.makeText(getContext(), "Keine gekoppelten Geräte gefunden", Toast.LENGTH_SHORT).show();
         }
+
+        DeviceListAdapter adapter = new DeviceListAdapter(devices, this);
+        deviceRecyclerView.setAdapter(adapter);
+
         return view;
     }
 
