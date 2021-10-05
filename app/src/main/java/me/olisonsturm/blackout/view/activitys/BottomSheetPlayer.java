@@ -47,7 +47,7 @@ public class BottomSheetPlayer extends BottomSheetDialogFragment {
             } else {
                 Player player = new Player(nickNameL, realNameL, gender);
 
-                GlobalData data = (GlobalData) view.getContext();
+                GlobalData data = (GlobalData) view.getContext().getApplicationContext();
 
                 data.getGlobalPlayerArrayList().add(player);
 
