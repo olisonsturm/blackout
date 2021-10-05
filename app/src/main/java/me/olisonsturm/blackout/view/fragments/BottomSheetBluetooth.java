@@ -1,4 +1,4 @@
-package me.olisonsturm.blackout.view.activitys;
+package me.olisonsturm.blackout.view.fragments;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -21,6 +21,7 @@ import java.util.Set;
 import me.olisonsturm.blackout.R;
 import me.olisonsturm.blackout.view.Infos.ConnectionInfo;
 import me.olisonsturm.blackout.view.Infos.DeviceInfo;
+import me.olisonsturm.blackout.view.adapter.DeviceListAdapter;
 
 public class BottomSheetBluetooth extends BottomSheetDialogFragment implements DeviceListAdapter.OnNoteListener {
 

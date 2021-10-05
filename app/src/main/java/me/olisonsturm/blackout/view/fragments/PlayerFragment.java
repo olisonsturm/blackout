@@ -13,8 +13,6 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -22,8 +20,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
 import me.olisonsturm.blackout.R;
-import me.olisonsturm.blackout.view.activitys.BottomSheetPlayer;
-import me.olisonsturm.blackout.view.activitys.DeviceListAdapter;
 
 public class PlayerFragment extends Fragment  {
 

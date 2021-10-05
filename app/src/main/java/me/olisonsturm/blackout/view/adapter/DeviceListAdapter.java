@@ -1,4 +1,4 @@
-package me.olisonsturm.blackout.view.activitys;
+package me.olisonsturm.blackout.view.adapter;
 
 import android.util.Log;
 import android.view.LayoutInflater;

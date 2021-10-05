@@ -1,4 +1,4 @@
-package me.olisonsturm.blackout.view.activitys;
+package me.olisonsturm.blackout.view.fragments;
 
 import android.os.Bundle;
 import android.text.TextUtils;

@@ -26,6 +26,7 @@ import java.util.UUID;
 
 import me.olisonsturm.blackout.R;
 import me.olisonsturm.blackout.view.Infos.ConnectionInfo;
+import me.olisonsturm.blackout.view.fragments.BottomSheetBluetooth;
 import me.olisonsturm.blackout.view.fragments.GamingFragment;
 import me.olisonsturm.blackout.view.fragments.PlayerFragment;
 import me.olisonsturm.blackout.view.fragments.StatisticsFragment;
