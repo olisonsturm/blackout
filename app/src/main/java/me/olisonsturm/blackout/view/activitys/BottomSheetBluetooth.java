@@ -25,6 +25,7 @@ import me.olisonsturm.blackout.view.Infos.DeviceInfo;
 public class BottomSheetBluetooth extends BottomSheetDialogFragment implements DeviceListAdapter.OnNoteListener {
 
     RecyclerView deviceRecyclerView;
+    RecyclerView deviceRecyclerViewSearch;
     RecyclerView.LayoutManager layoutManager;
 
     BluetoothAdapter bluetoothAdapter;
@@ -41,6 +42,7 @@ public class BottomSheetBluetooth extends BottomSheetDialogFragment implements D
         View view = inflater.inflate(R.layout.bottom_sheet_bluetooth_layout, container, false);
 
         deviceRecyclerView = view.findViewById(R.id.bluetoothList);
+        deviceRecyclerViewSearch = view.findViewById(R.id.bluetoothListSearch);
 
         layoutManager = new LinearLayoutManager(getContext());
         deviceRecyclerView.setLayoutManager(layoutManager);
