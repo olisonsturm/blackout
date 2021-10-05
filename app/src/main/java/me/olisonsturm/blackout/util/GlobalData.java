@@ -4,17 +4,17 @@ import android.app.Application;
 
 import java.util.List;
 
-import me.olisonsturm.blackout.model.Player;
+import me.olisonsturm.blackout.model.playerexampler;
 
 public class GlobalData extends Application {
 
-    private List<Player> globalPlayerArrayList;
+    private List<playerexampler> globalPlayerArrayList;
 
-    public List<Player> getGlobalPlayerArrayList() {
+    public List<playerexampler> getGlobalPlayerArrayList() {
         return globalPlayerArrayList;
     }
 
-    public void setGlobalPlayerArrayList(List<Player> playerArrayList) {
+    public void setGlobalPlayerArrayList(List<playerexampler> playerArrayList) {
         this.globalPlayerArrayList = playerArrayList;
     }
 
