@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -16,7 +15,7 @@ public class PlayerViewModel extends AndroidViewModel {
 
 
 
-    public PlayerViewModel(@NonNull @NotNull Application application) {
+    public PlayerViewModel(@NonNull  Application application) {
         super(application);
         repository = new PlayerRepository(application);
         allPlayers = repository.getAllPlayer();

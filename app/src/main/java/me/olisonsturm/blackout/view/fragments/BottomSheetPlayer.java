@@ -48,10 +48,10 @@ public class BottomSheetPlayer extends BottomSheetDialogFragment {
             if (TextUtils.isEmpty(nickNameL) || TextUtils.isEmpty(realNameL)) {
                 Toast.makeText(view.getContext(), "Bitte alle Spielerdaten eingeben", Toast.LENGTH_SHORT).show();
             } else {
-
+                /*
                 Player player = new Player(nickNameL,realNameL,gender,priority);
                 PlayerViewModel.insert(player);
-                dismiss();
+                dismiss();*/
             }
         });
 

@@ -9,7 +9,6 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import org.jetbrains.annotations.NotNull;
 
 @Database(entities = {Player.class}, version = 1)
 public abstract class PlayerDatabase extends RoomDatabase {
@@ -31,7 +30,7 @@ public abstract class PlayerDatabase extends RoomDatabase {
 
     private static RoomDatabase.Callback roomCallback = new RoomDatabase.Callback(){
         @Override
-        public void onCreate(@NonNull @NotNull SupportSQLiteDatabase db) {
+        public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
             new PopulateDbAsyncTask(instance).execute();
         }

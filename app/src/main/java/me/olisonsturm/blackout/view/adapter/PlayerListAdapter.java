@@ -9,8 +9,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,16 +21,16 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Pl
 
 
     @NonNull
-    @NotNull
+
     @Override
-    public PlayerHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+    public PlayerHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.player_item, parent, false);
         return new PlayerHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull PlayerHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PlayerHolder holder, int position) {
         Player currentPlayer = players.get(position);
         holder.textViewNickName.setText(currentPlayer.getNickName());
         holder.textViewRealName.setText(currentPlayer.getRealName());
@@ -77,7 +75,7 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Pl
         private TextView textViewRealName;
         private ImageView genderImageView;
 
-        public PlayerHolder(@NonNull @NotNull View itemView) {
+        public PlayerHolder(@NonNull View itemView) {
             super(itemView);
             textViewNickName = itemView.findViewById(R.id.text_view_nickName);
             textViewRealName = itemView.findViewById(R.id.text_view_realName);

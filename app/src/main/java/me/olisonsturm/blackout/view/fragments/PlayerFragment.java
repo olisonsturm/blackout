@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -34,6 +33,7 @@ public class PlayerFragment extends Fragment {
     FloatingActionButton addBtn;
     private PlayerViewModel playerViewModel;
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstance) {
@@ -46,8 +46,9 @@ public class PlayerFragment extends Fragment {
         PlayerListAdapter adapter = new PlayerListAdapter();
         recyclerView.setAdapter(adapter);
 
+        //ViewModelProvider modelProvider = new ViewModelProvider(getViewModelStore());
 
-        playerViewModel = ViewModelProvider.get(PlayerViewModel.class);
+        playerViewModel = ViewModelProvider(view.getContext()).get(PlayerViewModel.class);
         playerViewModel.getAllPlayers().observe(getViewLifecycleOwner(), new Observer<List<Player>>() {
             @Override
             public void onChanged(List<Player> players) {
@@ -58,12 +59,12 @@ public class PlayerFragment extends Fragment {
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
-            public boolean onMove(@NonNull @NotNull RecyclerView recyclerView, @NonNull @NotNull RecyclerView.ViewHolder viewHolder, @NonNull @NotNull RecyclerView.ViewHolder target) {
+            public boolean onMove(@NonNull  RecyclerView recyclerView, @NonNull  RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
 
             @Override
-            public void onSwiped(@NonNull @NotNull RecyclerView.ViewHolder viewHolder, int direction) {
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 playerViewModel.delete(adapter.getPlayerAt(viewHolder.getAdapterPosition()));
             }
         }).attachToRecyclerView(recyclerView);

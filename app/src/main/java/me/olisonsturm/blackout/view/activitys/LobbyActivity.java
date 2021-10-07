@@ -104,7 +104,7 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
                     bottomSheetBluetooth.show(getSupportFragmentManager(), "exampleBottomSheet");
                     break;
 
-                case R.id.more:
+                case R.id.deletePlayers:
                     Toast.makeText(LobbyActivity.this, "More", Toast.LENGTH_SHORT).show();
                     break;
             }
