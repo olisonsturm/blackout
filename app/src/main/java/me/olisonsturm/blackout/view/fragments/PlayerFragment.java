@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,9 +47,8 @@ public class PlayerFragment extends Fragment {
         PlayerListAdapter adapter = new PlayerListAdapter();
         recyclerView.setAdapter(adapter);
 
-        //ViewModelProvider modelProvider = new ViewModelProvider(getViewModelStore());
 
-        playerViewModel = ViewModelProvider(view.getContext()).get(PlayerViewModel.class);
+        playerViewModel = new ViewModelProvider((ViewModelStoreOwner) view.getContext()).get(PlayerViewModel.class);
         playerViewModel.getAllPlayers().observe(getViewLifecycleOwner(), new Observer<List<Player>>() {
             @Override
             public void onChanged(List<Player> players) {

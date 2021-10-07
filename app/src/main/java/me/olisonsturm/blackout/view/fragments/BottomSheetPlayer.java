@@ -27,6 +27,8 @@ public class BottomSheetPlayer extends BottomSheetDialogFragment {
     EditText editTextPriority;
     int gender = 0;
 
+    private PlayerViewModel playerViewModel;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -48,10 +50,10 @@ public class BottomSheetPlayer extends BottomSheetDialogFragment {
             if (TextUtils.isEmpty(nickNameL) || TextUtils.isEmpty(realNameL)) {
                 Toast.makeText(view.getContext(), "Bitte alle Spielerdaten eingeben", Toast.LENGTH_SHORT).show();
             } else {
-                /*
+
                 Player player = new Player(nickNameL,realNameL,gender,priority);
-                PlayerViewModel.insert(player);
-                dismiss();*/
+                playerViewModel.insert(player);
+                dismiss();
             }
         });
 
