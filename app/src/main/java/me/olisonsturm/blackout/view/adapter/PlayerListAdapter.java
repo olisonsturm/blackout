@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,10 +16,10 @@ import java.util.List;
 
 import me.olisonsturm.blackout.R;
 import me.olisonsturm.blackout.model.Player;
-import me.olisonsturm.blackout.view.Infos.DeviceInfo;
 
-public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.PlayerHolder>{
+public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.PlayerHolder> {
     private List<Player> players = new ArrayList<>();
+    private OnItemClickListener listener;
 
 
     @NonNull
@@ -37,10 +36,13 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Pl
         Player currentPlayer = players.get(position);
         holder.textViewNickName.setText(currentPlayer.getNickName());
         holder.textViewRealName.setText(currentPlayer.getRealName());
-        switch (currentPlayer.getGender()){
-            case 0: holder.genderImageView.setImageResource(R.drawable.male);
-            case 1: holder.genderImageView.setImageResource(R.drawable.female);
-            case 2: holder.genderImageView.setImageResource(R.drawable.divers);
+        switch (currentPlayer.getGender()) {
+            case 0:
+                holder.genderImageView.setImageResource(R.drawable.male);
+            case 1:
+                holder.genderImageView.setImageResource(R.drawable.female);
+            case 2:
+                holder.genderImageView.setImageResource(R.drawable.divers);
         }
 
 
@@ -56,7 +58,21 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Pl
         notifyDataSetChanged();
     }
 
-    class PlayerHolder extends RecyclerView.ViewHolder{
+    public Player getPlayerAt(int position) {
+        return players.get(position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Player player);
+
+
+    }
+
+    class PlayerHolder extends RecyclerView.ViewHolder {
         private TextView textViewNickName;
         private TextView textViewRealName;
         private ImageView genderImageView;
@@ -66,6 +82,17 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Pl
             textViewNickName = itemView.findViewById(R.id.text_view_nickName);
             textViewRealName = itemView.findViewById(R.id.text_view_realName);
             genderImageView = itemView.findViewById(R.id.genderDisplay);
+
+            /*
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (listener != null && position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(players.get(position));
+                    }
+                }
+            });*/
         }
     }
 }

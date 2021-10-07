@@ -1,26 +1,26 @@
 package me.olisonsturm.blackout.view.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 import me.olisonsturm.blackout.R;
@@ -28,13 +28,11 @@ import me.olisonsturm.blackout.model.Player;
 import me.olisonsturm.blackout.model.PlayerViewModel;
 import me.olisonsturm.blackout.view.adapter.PlayerListAdapter;
 
-public class PlayerFragment extends Fragment  {
-
-    private PlayerViewModel playerViewModel;
+public class PlayerFragment extends Fragment {
 
     Button continueBtn;
     FloatingActionButton addBtn;
-
+    private PlayerViewModel playerViewModel;
 
     @Nullable
     @Override
@@ -49,15 +47,34 @@ public class PlayerFragment extends Fragment  {
         recyclerView.setAdapter(adapter);
 
 
-        playerViewModel = ViewModelProviders.of(getContext()).get(PlayerViewModel.class);
-        playerViewModel.getAllPlayers().observe(this, new Observer<List<Player>>() {
+        playerViewModel = ViewModelProvider.get(PlayerViewModel.class);
+        playerViewModel.getAllPlayers().observe(getViewLifecycleOwner(), new Observer<List<Player>>() {
             @Override
             public void onChanged(List<Player> players) {
                 adapter.setPlayers(players);
             }
         });
 
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull @NotNull RecyclerView recyclerView, @NonNull @NotNull RecyclerView.ViewHolder viewHolder, @NonNull @NotNull RecyclerView.ViewHolder target) {
+                return false;
+            }
 
+            @Override
+            public void onSwiped(@NonNull @NotNull RecyclerView.ViewHolder viewHolder, int direction) {
+                playerViewModel.delete(adapter.getPlayerAt(viewHolder.getAdapterPosition()));
+            }
+        }).attachToRecyclerView(recyclerView);
+
+        /*
+        adapter.setOnItemClickListener(new PlayerListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Player player) {
+                Intent intent = new Intent(PlayerFragment.this, )
+            }
+        });*/
 
 
         addBtn = view.findViewById(R.id.addNewPlayer);
@@ -79,9 +96,19 @@ public class PlayerFragment extends Fragment  {
             }
         });
 
-
-
         return view;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.deletePlayers:
+                playerViewModel.deleteAllPlayers();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
     }
 
 }

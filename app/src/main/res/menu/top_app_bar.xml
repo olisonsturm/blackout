@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/more"
-        android:title="@string/more" />
+        android:id="@+id/deletePlayers"
+        android:title="@string/DeleteallPlayers"
+        app:showAsAction="never" />
     <item
         android:id="@+id/bluetoothCheck"
         android:icon="@drawable/ic_bluetooth_off"
         android:title="@string/bluetooth"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
 
 </menu>

@@ -14,4 +14,5 @@
     <string name="menu">Menu</string>
     <string name="bluetooth">BLUETOOTH</string>
     <string name="hinzufügen">Hinzufügen</string>
+    <string name="DeleteallPlayers">Delete all Players</string>
 </resources>
