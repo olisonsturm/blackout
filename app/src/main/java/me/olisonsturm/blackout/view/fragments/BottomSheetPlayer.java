@@ -11,12 +11,15 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import me.olisonsturm.blackout.R;
 import me.olisonsturm.blackout.model.Player;
 import me.olisonsturm.blackout.model.PlayerViewModel;
+import me.olisonsturm.blackout.view.activitys.LobbyActivity;
 
 public class BottomSheetPlayer extends BottomSheetDialogFragment {
 
@@ -27,12 +30,16 @@ public class BottomSheetPlayer extends BottomSheetDialogFragment {
     EditText editTextPriority;
     int gender = 0;
 
-    private PlayerViewModel playerViewModel;
+    //private PlayerViewModel playerViewModel;
+
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.bottom_sheet_player_layout, container, false);
+
+        //playerViewModel = new ViewModelProvider((ViewModelStoreOwner) view.getContext()).get(PlayerViewModel.class);
 
         addBtn = view.findViewById(R.id.playerAdd);
         genderBtn = view.findViewById(R.id.genderButton);
@@ -51,8 +58,8 @@ public class BottomSheetPlayer extends BottomSheetDialogFragment {
                 Toast.makeText(view.getContext(), "Bitte alle Spielerdaten eingeben", Toast.LENGTH_SHORT).show();
             } else {
 
-                Player player = new Player(nickNameL,realNameL,gender,priority);
-                playerViewModel.insert(player);
+                //Player player = new Player(nickNameL,realNameL,gender,priority);
+                //playerViewModel.insert(player);
                 dismiss();
             }
         });
@@ -75,7 +82,6 @@ public class BottomSheetPlayer extends BottomSheetDialogFragment {
                     break;
             }
         });
-
 
         return view;
     }

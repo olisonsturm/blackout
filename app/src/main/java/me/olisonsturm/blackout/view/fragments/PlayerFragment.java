@@ -1,6 +1,5 @@
 package me.olisonsturm.blackout.view.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -20,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-
 import java.util.List;
 
 import me.olisonsturm.blackout.R;
@@ -28,10 +26,13 @@ import me.olisonsturm.blackout.model.Player;
 import me.olisonsturm.blackout.model.PlayerViewModel;
 import me.olisonsturm.blackout.view.adapter.PlayerListAdapter;
 
+
 public class PlayerFragment extends Fragment {
 
     Button continueBtn;
     FloatingActionButton addBtn;
+    RecyclerView recyclerView;
+    PlayerListAdapter adapter;
     private PlayerViewModel playerViewModel;
 
 
@@ -40,11 +41,11 @@ public class PlayerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstance) {
         View view = inflater.inflate(R.layout.fragment_player, container, false);
 
-        RecyclerView recyclerView = view.findViewById(R.id.player_recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView = view.findViewById(R.id.player_recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setHasFixedSize(true);
 
-        PlayerListAdapter adapter = new PlayerListAdapter();
+        adapter = new PlayerListAdapter();
         recyclerView.setAdapter(adapter);
 
 
@@ -59,7 +60,7 @@ public class PlayerFragment extends Fragment {
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
-            public boolean onMove(@NonNull  RecyclerView recyclerView, @NonNull  RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            public boolean onMove(@NonNull  RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
 
