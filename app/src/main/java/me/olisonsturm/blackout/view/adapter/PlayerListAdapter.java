@@ -17,11 +17,10 @@ import me.olisonsturm.blackout.model.Player;
 
 public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.PlayerHolder> {
     private List<Player> players = new ArrayList<>();
-    private OnItemClickListener listener;
+
 
 
     @NonNull
-
     @Override
     public PlayerHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -42,8 +41,6 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Pl
             case 2:
                 holder.genderImageView.setImageResource(R.drawable.divers);
         }
-
-
     }
 
     @Override
@@ -60,16 +57,6 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Pl
         return players.get(position);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick(Player player);
-
-
-    }
-
     class PlayerHolder extends RecyclerView.ViewHolder {
         private TextView textViewNickName;
         private TextView textViewRealName;
@@ -80,17 +67,6 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Pl
             textViewNickName = itemView.findViewById(R.id.text_view_nickName);
             textViewRealName = itemView.findViewById(R.id.text_view_realName);
             genderImageView = itemView.findViewById(R.id.genderDisplay);
-
-            /*
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    if (listener != null && position != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(players.get(position));
-                    }
-                }
-            });*/
         }
     }
 }

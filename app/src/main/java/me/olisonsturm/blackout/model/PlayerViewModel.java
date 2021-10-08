@@ -13,9 +13,7 @@ public class PlayerViewModel extends AndroidViewModel {
     private PlayerRepository repository;
     private LiveData<List<Player>> allPlayers;
 
-
-
-    public PlayerViewModel(@NonNull  Application application) {
+    public PlayerViewModel(@NonNull Application application) {
         super(application);
         repository = new PlayerRepository(application);
         allPlayers = repository.getAllPlayer();

@@ -23,11 +23,12 @@ import me.olisonsturm.blackout.view.activitys.LobbyActivity;
 
 public class BottomSheetPlayer extends BottomSheetDialogFragment {
 
-    Button addBtn;
-    ImageView genderBtn;
-    EditText nickName;
-    EditText realName;
-    EditText editTextPriority;
+    Button      addBtn;
+    ImageView   genderBtn;
+    EditText    nickName;
+    EditText    realName;
+    EditText    editTextPriority;
+
     int gender = 0;
 
     //private PlayerViewModel playerViewModel;
@@ -41,10 +42,10 @@ public class BottomSheetPlayer extends BottomSheetDialogFragment {
 
         //playerViewModel = new ViewModelProvider((ViewModelStoreOwner) view.getContext()).get(PlayerViewModel.class);
 
-        addBtn = view.findViewById(R.id.playerAdd);
+        addBtn    = view.findViewById(R.id.playerAdd);
         genderBtn = view.findViewById(R.id.genderButton);
-        nickName = view.findViewById(R.id.playerNickName);
-        realName = view.findViewById(R.id.playerRealName);
+        nickName  = view.findViewById(R.id.playerNickName);
+        realName  = view.findViewById(R.id.playerRealName);
         editTextPriority = view.findViewById(R.id.eTPriority);
 
         genderBtn.setImageResource(R.drawable.male);
@@ -52,12 +53,12 @@ public class BottomSheetPlayer extends BottomSheetDialogFragment {
         addBtn.setOnClickListener(v -> {
             String nickNameL = nickName.getText().toString();
             String realNameL = realName.getText().toString();
-            int priority = Integer.parseInt(editTextPriority.getText().toString());
+            String priority  = editTextPriority.getText().toString();
 
-            if (TextUtils.isEmpty(nickNameL) || TextUtils.isEmpty(realNameL)) {
+            if (TextUtils.isEmpty(nickNameL) || TextUtils.isEmpty(realNameL) || TextUtils.isEmpty(priority)) {
                 Toast.makeText(view.getContext(), "Bitte alle Spielerdaten eingeben", Toast.LENGTH_SHORT).show();
             } else {
-
+                Toast.makeText(view.getContext(), "save", Toast.LENGTH_SHORT).show();
                 //Player player = new Player(nickNameL,realNameL,gender,priority);
                 //playerViewModel.insert(player);
                 dismiss();

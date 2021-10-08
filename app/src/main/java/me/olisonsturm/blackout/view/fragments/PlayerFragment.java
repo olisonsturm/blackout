@@ -31,8 +31,6 @@ public class PlayerFragment extends Fragment {
 
     Button continueBtn;
     FloatingActionButton addBtn;
-    RecyclerView recyclerView;
-    PlayerListAdapter adapter;
     private PlayerViewModel playerViewModel;
 
 
@@ -41,11 +39,16 @@ public class PlayerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstance) {
         View view = inflater.inflate(R.layout.fragment_player, container, false);
 
-        recyclerView = view.findViewById(R.id.player_recyclerView);
+        addBtn = view.findViewById(R.id.addNewPlayer);
+        continueBtn = view.findViewById(R.id.startGameButton);
+
+
+        RecyclerView recyclerView = view.findViewById(R.id.player_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setHasFixedSize(true);
 
-        adapter = new PlayerListAdapter();
+
+        final PlayerListAdapter adapter = new PlayerListAdapter();
         recyclerView.setAdapter(adapter);
 
 
@@ -60,7 +63,7 @@ public class PlayerFragment extends Fragment {
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
-            public boolean onMove(@NonNull  RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            public boolean onMove(@NonNull  RecyclerView recyclerView, @NonNull  RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
 
@@ -70,17 +73,6 @@ public class PlayerFragment extends Fragment {
             }
         }).attachToRecyclerView(recyclerView);
 
-        /*
-        adapter.setOnItemClickListener(new PlayerListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Player player) {
-                Intent intent = new Intent(PlayerFragment.this, )
-            }
-        });*/
-
-
-        addBtn = view.findViewById(R.id.addNewPlayer);
-        continueBtn = view.findViewById(R.id.startGameButton);
 
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override

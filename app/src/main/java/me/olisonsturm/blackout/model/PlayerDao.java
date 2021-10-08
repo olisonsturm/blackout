@@ -25,5 +25,4 @@ public interface PlayerDao {
 
     @Query("SELECT * FROM player_table ORDER BY priority DESC")
     LiveData<List<Player>> getAllPlayers();
-
 }
