@@ -1,15 +1,16 @@
 package me.olisonsturm.blackout.view.fragments;
 
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -19,9 +20,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 import me.olisonsturm.blackout.R;
 import me.olisonsturm.blackout.model.Player;
 import me.olisonsturm.blackout.model.PlayerViewModel;
@@ -61,16 +65,52 @@ public class PlayerFragment extends Fragment {
             }
         });
 
+
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
-            public boolean onMove(@NonNull  RecyclerView recyclerView, @NonNull  RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                playerViewModel.delete(adapter.getPlayerAt(viewHolder.getAdapterPosition()));
+                int position = viewHolder.getAdapterPosition();
+                Player player = adapter.getPlayerAt(position);
+
+                if (direction == ItemTouchHelper.LEFT) {
+                    playerViewModel.delete(player);
+                    Snackbar.make(recyclerView, "Name", Snackbar.LENGTH_LONG)
+                            .setAction("UNDO", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    playerViewModel.insert(player);
+                                }
+                            }).show();
+                }
+
+                if (direction == ItemTouchHelper.RIGHT){
+
+                    //den Spieler mit durch geben !!!
+
+                    BottomSheetPlayerEdit bottomSheetPlayerEdit = new BottomSheetPlayerEdit();
+                    bottomSheetPlayerEdit.show(getParentFragmentManager(), "BottomSheetPlayerEdit");
+                }
+            }
+
+            @Override
+            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder,
+                                    float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
+                new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                        .addSwipeLeftBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.red))
+                        .addSwipeLeftActionIcon(R.drawable.ic_delete)
+                        .addSwipeRightBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.green))
+                        .addSwipeRightActionIcon(R.drawable.ic_edit)
+                        .create()
+                        .decorate();
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             }
         }).attachToRecyclerView(recyclerView);
 

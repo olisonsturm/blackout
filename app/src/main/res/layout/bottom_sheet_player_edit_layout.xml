@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp">
-
     <!-- ?attr/actionBarSize -->
 
     <RelativeLayout
@@ -44,6 +43,14 @@
         android:gravity="center"
         android:hint="echter Name" />
 
+    <EditText
+        android:id="@+id/eTPriority"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="Priorität"
+        android:inputType="number" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -55,12 +62,12 @@
             android:text="Geschlecht"
             android:textSize="20sp" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/genderButton"
-            android:src="@drawable/ic_bluetooth_connected"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true" />
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/male" />
 
     </RelativeLayout>
 
