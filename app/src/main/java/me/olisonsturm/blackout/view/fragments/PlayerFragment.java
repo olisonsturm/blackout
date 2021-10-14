@@ -80,7 +80,7 @@ public class PlayerFragment extends Fragment {
 
                 if (direction == ItemTouchHelper.LEFT) {
                     playerViewModel.delete(player);
-                    Snackbar.make(recyclerView, "Name", Snackbar.LENGTH_LONG)
+                    Snackbar.make(recyclerView, player.getNickName() + " wirklich löschen?", Snackbar.LENGTH_LONG)
                             .setAction("UNDO", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -90,10 +90,14 @@ public class PlayerFragment extends Fragment {
                 }
 
                 if (direction == ItemTouchHelper.RIGHT){
-
-                    //den Spieler mit durch geben !!!
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Nick_Name", player.getNickName());
+                    bundle.putString("Real_Name", player.getRealName());
+                    bundle.putInt("gender", player.getGender());
+                    bundle.putInt("priority", player.getPriority());
 
                     BottomSheetPlayerEdit bottomSheetPlayerEdit = new BottomSheetPlayerEdit();
+                    bottomSheetPlayerEdit.setArguments(bundle);
                     bottomSheetPlayerEdit.show(getParentFragmentManager(), "BottomSheetPlayerEdit");
                 }
             }

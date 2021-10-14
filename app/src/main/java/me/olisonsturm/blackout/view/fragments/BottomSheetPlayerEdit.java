@@ -27,7 +27,7 @@ public class BottomSheetPlayerEdit extends BottomSheetDialogFragment{
     EditText realName;
     EditText editTextPriority;
 
-    int gender = 0;
+    int gender;
 
     private PlayerViewModel playerViewModel;
 
@@ -38,6 +38,8 @@ public class BottomSheetPlayerEdit extends BottomSheetDialogFragment{
         View view = inflater.inflate(R.layout.bottom_sheet_player_edit_layout, container, false);
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
+        Bundle bundle = this.getArguments();
+        playerViewModel = new ViewModelProvider(this).get(PlayerViewModel.class);
 
         addBtn = view.findViewById(R.id.playerAdd);
         genderBtn = view.findViewById(R.id.genderButton);
@@ -45,8 +47,24 @@ public class BottomSheetPlayerEdit extends BottomSheetDialogFragment{
         realName = view.findViewById(R.id.playerRealName);
         editTextPriority = view.findViewById(R.id.eTPriority);
 
-        playerViewModel = new ViewModelProvider(this).get(PlayerViewModel.class);
-        genderBtn.setImageResource(R.drawable.male);
+
+        nickName.setText(bundle.getString("Nick_Name"));
+        realName.setText(bundle.getString("Real_Name"));
+        editTextPriority.setText(String.valueOf(bundle.getInt("priority")));
+        gender = bundle.getInt("gender");
+
+        switch (gender) {
+            case 0:
+                genderBtn.setImageResource(R.drawable.male);
+                break;
+            case 1:
+                genderBtn.setImageResource(R.drawable.female);
+                break;
+            case 2:
+                genderBtn.setImageResource(R.drawable.divers);
+                break;
+        }
+
 
         addBtn.setOnClickListener(v -> {
             String nickNameL = nickName.getText().toString();
@@ -56,14 +74,13 @@ public class BottomSheetPlayerEdit extends BottomSheetDialogFragment{
             if (TextUtils.isEmpty(nickNameL) || TextUtils.isEmpty(realNameL) || TextUtils.isEmpty(priority)) {
                 Toast.makeText(view.getContext(), "Bitte alle Spielerdaten eingeben", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(view.getContext(), "save", Toast.LENGTH_SHORT).show();
                 int priorityInt = Integer.parseInt(priority);
                 Player player = new Player(nickNameL, realNameL, gender, priorityInt);
-                playerViewModel.insert(player);
+                playerViewModel.update(player);
+                Toast.makeText(view.getContext(), "save", Toast.LENGTH_SHORT).show();
                 dismiss();
             }
         });
-
 
         genderBtn.setOnClickListener(v -> {
             gender = gender + 1;

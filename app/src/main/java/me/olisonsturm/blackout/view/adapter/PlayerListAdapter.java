@@ -36,10 +36,13 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Pl
         switch (currentPlayer.getGender()) {
             case 0:
                 holder.genderImageView.setImageResource(R.drawable.male);
+                break;
             case 1:
                 holder.genderImageView.setImageResource(R.drawable.female);
+                break;
             case 2:
                 holder.genderImageView.setImageResource(R.drawable.divers);
+                break;
         }
     }
 

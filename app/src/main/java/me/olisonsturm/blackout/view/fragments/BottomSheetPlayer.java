@@ -41,7 +41,6 @@ public class BottomSheetPlayer extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.bottom_sheet_player_layout, container, false);
-
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
 
@@ -63,13 +62,11 @@ public class BottomSheetPlayer extends BottomSheetDialogFragment {
                 Toast.makeText(view.getContext(), "Bitte alle Spielerdaten eingeben", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(view.getContext(), "save", Toast.LENGTH_SHORT).show();
-                int priorityInt = Integer.parseInt(priority);
-                Player player = new Player(nickNameL, realNameL, gender, priorityInt);
+                Player player = new Player(nickNameL, realNameL, gender, Integer.parseInt(priority));
                 playerViewModel.insert(player);
                 dismiss();
             }
         });
-
 
         genderBtn.setOnClickListener(v -> {
             gender = gender + 1;

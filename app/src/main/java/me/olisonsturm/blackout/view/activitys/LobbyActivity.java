@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -25,6 +26,7 @@ import java.io.OutputStream;
 import java.util.UUID;
 
 import me.olisonsturm.blackout.R;
+import me.olisonsturm.blackout.model.PlayerViewModel;
 import me.olisonsturm.blackout.view.Infos.ConnectionInfo;
 import me.olisonsturm.blackout.view.fragments.BottomSheetBluetooth;
 import me.olisonsturm.blackout.view.fragments.GamingFragment;
@@ -45,12 +47,14 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
     String deviceAddress = null;
     private DrawerLayout drawer;
     private ProgressDialog progress;
+    private PlayerViewModel playerViewModel;
 
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
+        playerViewModel = new ViewModelProvider(this).get(PlayerViewModel.class);
 
         drawer = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.myToolbar);
@@ -90,13 +94,9 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
             switch (item.getItemId()) {
                 case R.id.bluetoothCheck:
                     if (!bluetoothAdapter.isEnabled()) {
-                        Toast.makeText(LobbyActivity.this, "Aktiviere Bluetooth", Toast.LENGTH_SHORT).show();
                         bluetoothAdapter.enable();
-                        //bluetoothIcon.setIcon(R.drawable.ic_bluetooth_on);
                     }
-
                     if (!bluetoothAdapter.isDiscovering()) {
-                        Toast.makeText(LobbyActivity.this, "mache Gerät sichtbar", Toast.LENGTH_SHORT).show();
                         bluetoothAdapter.startDiscovery();
                         //bluetoothIcon.setIcon(R.drawable.ic_bluetooth_discovering);
                     }
@@ -105,11 +105,9 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
                     break;
 
                 case R.id.deletePlayers:
-                    Toast.makeText(LobbyActivity.this, "More", Toast.LENGTH_SHORT).show();
+                    playerViewModel.deleteAllPlayers();
                     break;
             }
-
-
             return false;
         });
     }
@@ -156,8 +154,6 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
     public void onItemClicked(String name, String address) {
         deviceName = name;
         deviceAddress = address;
-
-        //Toast.makeText(this, "Device: " + deviceName + ", " + deviceAddress, Toast.LENGTH_LONG).show();
         new ConnectBT().execute();
     }
 
@@ -204,7 +200,7 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
             } else {
                 Toast.makeText(LobbyActivity.this, "Connected", Toast.LENGTH_SHORT).show();
                 ConnectionInfo.setConnected(true);
-                //bluetoothIcon.setIcon(R.drawable.ic_bluetooth_off);
+                //bluetoothIcon.setIcon(R.drawable.ic_bluetooth_connected);
             }
             progress.dismiss();
         }
