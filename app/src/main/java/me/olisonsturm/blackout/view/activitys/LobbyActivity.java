@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -38,7 +39,7 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
     static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     Toolbar toolbar;
     NavigationView navigationView;
-    //MenuItem bluetoothIcon;
+    ActionMenuItemView bluetoothIcon;
     BluetoothAdapter bluetoothAdapter;
     BluetoothSocket bluetoothSocket;
     InputStream inputStream;
@@ -49,7 +50,7 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
     private ProgressDialog progress;
     private PlayerViewModel playerViewModel;
 
-    @SuppressLint("NonConstantResourceId")
+    @SuppressLint({"NonConstantResourceId", "RestrictedApi"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +60,7 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
         drawer = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.myToolbar);
         navigationView = findViewById(R.id.nav_view);
-        //bluetoothIcon =  (MenuItem) findViewById(R.id.bluetoothCheck);
+        bluetoothIcon = (ActionMenuItemView) findViewById(R.id.bluetoothCheck);
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
@@ -67,15 +68,15 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
 
 
         //check to set bluetooth Icon
-        /*
         if (!bluetoothAdapter.isEnabled()) {
-            bluetoothIcon.setImageResource(R.drawable.ic_bluetooth_off);
+            bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_off));
         } else {
-            bluetoothIcon.setImageResource(R.drawable.ic_bluetooth_on);
+            bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_on));
         }
+
         if (bluetoothAdapter.isDiscovering()) {
-            bluetoothIcon.setImageResource(R.drawable.ic_bluetooth_discovering);
-        }*/
+            bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_discovering));
+        }
 
 
         navigationView.setNavigationItemSelectedListener(this);
@@ -95,13 +96,17 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
                 case R.id.bluetoothCheck:
                     if (!bluetoothAdapter.isEnabled()) {
                         bluetoothAdapter.enable();
+                        bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_on));
+
+                    } else {
+                        if (!bluetoothAdapter.isDiscovering()) {
+                            bluetoothAdapter.startDiscovery();
+                            bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_discovering));
+                        }
+
+                        BottomSheetBluetooth bottomSheetBluetooth = new BottomSheetBluetooth();
+                        bottomSheetBluetooth.show(getSupportFragmentManager(), "exampleBottomSheet");
                     }
-                    if (!bluetoothAdapter.isDiscovering()) {
-                        bluetoothAdapter.startDiscovery();
-                        //bluetoothIcon.setIcon(R.drawable.ic_bluetooth_discovering);
-                    }
-                    BottomSheetBluetooth bottomSheetBluetooth = new BottomSheetBluetooth();
-                    bottomSheetBluetooth.show(getSupportFragmentManager(), "exampleBottomSheet");
                     break;
 
                 case R.id.deletePlayers:
@@ -154,9 +159,7 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
     public void onItemClicked(String name, String address) {
         deviceName = name;
         deviceAddress = address;
-        new ConnectBT().execute();
     }
-
 
     private class ConnectBT extends AsyncTask<Void, Void, Void> {
         private boolean ConnectSuccess = true; // UI thread
@@ -191,19 +194,12 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
 
             if (!ConnectSuccess) {
                 Toast.makeText(LobbyActivity.this, "Connection Failed. Is it a SPP Bluetooth? Try again!", Toast.LENGTH_LONG).show();
-                /*if (bluetoothAdapter.isEnabled()) {
-                    bluetoothIcon.setIcon(R.drawable.ic_bluetooth_on);
-                }
-                if (bluetoothAdapter.isDiscovering()) {
-                    bluetoothIcon.setIcon(R.drawable.ic_bluetooth_discovering);
-                }*/
             } else {
                 Toast.makeText(LobbyActivity.this, "Connected", Toast.LENGTH_SHORT).show();
-                ConnectionInfo.setConnected(true);
-                //bluetoothIcon.setIcon(R.drawable.ic_bluetooth_connected);
             }
             progress.dismiss();
         }
     }
 
 }
+
