@@ -24,6 +24,7 @@ import com.google.android.material.navigation.NavigationView;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Set;
 import java.util.UUID;
 
 import me.olisonsturm.blackout.R;
@@ -35,7 +36,7 @@ import me.olisonsturm.blackout.view.fragments.SpieleFragment;
 import me.olisonsturm.blackout.view.fragments.PlayerFragment;
 import me.olisonsturm.blackout.view.fragments.StatisticsFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
     private Toolbar toolbar;
@@ -48,6 +49,15 @@ public class MainActivity extends AppCompatActivity {
 
     private BluetoothAdapter mBluetoothAdapter;
     private BluetoothDevice mDevice;
+
+    private void findBlackbox() {
+        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter
+                .getBondedDevices();
+        for (BluetoothDevice device : pairedDevices) {
+            if (device.getName().equals("raspberrypi"))
+                this.mDevice = device;
+        }
+    }
 
     @SuppressLint({"NonConstantResourceId", "RestrictedApi"})
     @Override
@@ -63,17 +73,16 @@ public class MainActivity extends AppCompatActivity {
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-        new ConnectionInfo(false);
 
 
         //check to set bluetooth Icon
-        if (!bluetoothAdapter.isEnabled()) {
+        if (!mBluetoothAdapter.isEnabled()) {
             bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_off));
         } else {
             bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_on));
         }
 
-        if (bluetoothAdapter.isDiscovering()) {
+        if (mBluetoothAdapter.isDiscovering()) {
             bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_discovering));
         }
 
@@ -93,12 +102,12 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.bluetoothCheck:
-                    if (!bluetoothAdapter.isEnabled()) {
-                        bluetoothAdapter.enable();
+                    if (!mBluetoothAdapter.isEnabled()) {
+                        mBluetoothAdapter.enable();
                         bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_on));
                     } else {
-                        if (!bluetoothAdapter.isDiscovering()) {
-                            bluetoothAdapter.startDiscovery();
+                        if (!mBluetoothAdapter.isDiscovering()) {
+                            mBluetoothAdapter.startDiscovery();
                             bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_discovering));
                         }
 
