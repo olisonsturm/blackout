@@ -33,12 +33,7 @@
             android:theme="@style/Theme.Blackout.NoActionBar" />
 
         <activity
-            android:name=".view.activitys.DeviceListActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:theme="@android:style/Theme.Holo.Dialog" />
-
-        <activity
-            android:name=".view.activitys.TestActivity" />
+            android:name=".bluetooth.SelectDeviceActivity" />
 
     </application>
 

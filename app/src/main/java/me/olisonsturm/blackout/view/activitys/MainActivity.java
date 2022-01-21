@@ -1,12 +1,15 @@
 package me.olisonsturm.blackout.view.activitys;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.os.AsyncTask;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -27,37 +30,39 @@ import java.io.OutputStream;
 import java.util.UUID;
 
 import me.olisonsturm.blackout.R;
+import me.olisonsturm.blackout.bluetooth.SelectDeviceActivity;
 import me.olisonsturm.blackout.model.PlayerViewModel;
-import me.olisonsturm.blackout.util.BluetoothChatService;
-import me.olisonsturm.blackout.view.Infos.ConnectionInfo;
-import me.olisonsturm.blackout.view.fragments.BottomSheetBluetooth;
 import me.olisonsturm.blackout.view.fragments.SpieleFragment;
 import me.olisonsturm.blackout.view.fragments.PlayerFragment;
 import me.olisonsturm.blackout.view.fragments.StatisticsFragment;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, BottomSheetBluetooth.BottomSheetBluetoothListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+
     Toolbar toolbar;
     NavigationView navigationView;
     ActionMenuItemView bluetoothIcon;
-    BluetoothAdapter bluetoothAdapter;
-    BluetoothSocket bluetoothSocket;
-    InputStream inputStream;
-    OutputStream outputStream;
-    String deviceName = null;
-    String deviceAddress = null;
-    private DrawerLayout drawer;
-    private ProgressDialog progress;
-    private PlayerViewModel playerViewModel;
 
-    private BluetoothChatService mChatService = null;
+    public static Handler handler;
+    public static BluetoothSocket mmSocket;
+    public static ConnectedThread connectedThread;
+    public static CreateConnectThread createConnectThread;
+    public static BluetoothAdapter bluetoothAdapter;
+    private String deviceName = null;
+    private String deviceAddress = null;
+
+    private final static int CONNECTING_STATUS = 1; // used in bluetooth handler to identify message status
+    private final static int MESSAGE_READ = 2; // used in bluetooth handler to identify message update
+
+    private DrawerLayout drawer;
+    private PlayerViewModel playerViewModel;
 
     @SuppressLint({"NonConstantResourceId", "RestrictedApi"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lobby);
+        setContentView(R.layout.activity_main);
         playerViewModel = new ViewModelProvider(this).get(PlayerViewModel.class);
 
         drawer = findViewById(R.id.drawer_layout);
@@ -67,8 +72,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-        new ConnectionInfo(false);
+        // If a bluetooth device has been selected from SelectDeviceActivity
+        deviceName = getIntent().getStringExtra("deviceName");
+        if (deviceName != null) {
+            // Get the device address to make BT Connection
+            deviceAddress = getIntent().getStringExtra("deviceAddress");
+            // Show progree and connection status
+            toolbar.setSubtitle("Connecting to " + deviceName + "...");
 
+            /*
+            This is the most important piece of code. When "deviceName" is found
+            the code will call a new thread to create a bluetooth connection to the
+            selected device (see the thread code below)
+             */
+            createConnectThread = new CreateConnectThread(bluetoothAdapter, deviceAddress);
+            createConnectThread.start();
+        }
 
         //check to set bluetooth Icon
         if (!bluetoothAdapter.isEnabled()) {
@@ -100,26 +119,51 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     if (!bluetoothAdapter.isEnabled()) {
                         bluetoothAdapter.enable();
                         bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_on));
-
                     } else {
-                        if (!bluetoothAdapter.isDiscovering()) {
-                            bluetoothAdapter.startDiscovery();
-                            bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_discovering));
-                        }
-
-                        BottomSheetBluetooth bottomSheetBluetooth = new BottomSheetBluetooth();
-                        bottomSheetBluetooth.show(getSupportFragmentManager(), "exampleBottomSheet");
+                        Intent intent = new Intent(MainActivity.this, SelectDeviceActivity.class);
+                        startActivity(intent);
                     }
                     break;
 
                 case R.id.deletePlayers:
                     playerViewModel.deleteAllPlayers();
+                    connectedThread.write("3");
                     break;
             }
             return false;
         });
-    }
 
+        handler = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message msg){
+                switch (msg.what){
+                    case CONNECTING_STATUS:
+                        switch(msg.arg1){
+                            case 1:
+                                toolbar.setSubtitle("Connected to " + deviceName);
+                                break;
+                            case -1:
+                                toolbar.setSubtitle("Device fails to connect");
+                                break;
+                        }
+                        break;
+
+                    case MESSAGE_READ:
+                        String arduinoMsg = msg.obj.toString(); // Read message from Arduino
+                        switch (arduinoMsg.toLowerCase()){
+                            case "led is turned on":
+                                //textViewInfo.setText("Arduino Message : " + arduinoMsg);
+                                break;
+                            case "led is turned off":
+                                //textViewInfo.setText("Arduino Message : " + arduinoMsg);
+                                break;
+                        }
+                        break;
+                }
+            }
+        };
+
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -155,56 +199,141 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             super.onBackPressed();
         }
-    }
-
-
-    @Override
-    public void onItemClicked(String name, String address) {
-        deviceName = name;
-        deviceAddress = address;
-        new ConnectBT().execute();
-        //mChatService.connect(device, secure);
-    }
-
-    private class ConnectBT extends AsyncTask<Void, Void, Void> {
-        private boolean ConnectSuccess = true; // UI thread
-
-        @Override
-        protected void onPreExecute() {
-            progress = ProgressDialog.show(MainActivity.this, "Connecting to " + deviceName, "please wait!!!"); //show a progress dialog
+        // Terminate Bluetooth Connection and close app
+        if (createConnectThread != null){
+            createConnectThread.cancel();
         }
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
+    }
 
-        @Override
-        protected Void doInBackground(Void... devices) { //while the progress dialog is shown, the connection is done in background
+    /* ============================ Thread to Create Bluetooth Connection =================================== */
+    public static class CreateConnectThread extends Thread {
+
+        public CreateConnectThread(BluetoothAdapter bluetoothAdapter, String address) {
+            /*
+            Use a temporary object that is later assigned to mmSocket
+            because mmSocket is final.
+             */
+            BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(address);
+            BluetoothSocket tmp = null;
+
             try {
-                if (bluetoothSocket == null || !ConnectionInfo.isConnected()) {
-                    bluetoothAdapter = BluetoothAdapter.getDefaultAdapter(); //get the mobile bluetooth device
-                    BluetoothDevice dispositivo = bluetoothAdapter.getRemoteDevice(deviceAddress);//connects to the device's address and checks if it's available
-                    bluetoothSocket = dispositivo.createInsecureRfcommSocketToServiceRecord(myUUID); //create a RFCOMM (SPP) connection
-                    BluetoothAdapter.getDefaultAdapter().cancelDiscovery(); //stop Discovery
-                    bluetoothSocket.connect();//start connection
-                    outputStream = bluetoothSocket.getOutputStream();
-                    inputStream = bluetoothSocket.getInputStream();
-                }
-            } catch (IOException e) {
-                ConnectSuccess = false; //if the try failed, you can check the exception here
-            }
+                tmp = bluetoothDevice.createRfcommSocketToServiceRecord(myUUID);
 
-            return null;
+            } catch (IOException e) {
+                Log.e("Bluetooth", "Socket's create() method failed", e);
+            }
+            mmSocket = tmp;
         }
 
-        @Override
-        protected void onPostExecute(Void result) {  // after doInBackground to check if everything went fine
-            super.onPreExecute();
-
-            if (!ConnectSuccess) {
-                Toast.makeText(MainActivity.this, "Connection Failed. Is it a SPP Bluetooth? Try again!", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_SHORT).show();
+        public void run() {
+            // Cancel discovery because it otherwise slows down the connection.
+            BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+            bluetoothAdapter.cancelDiscovery();
+            try {
+                // Connect to the remote device through the socket. This call blocks
+                // until it succeeds or throws an exception.
+                mmSocket.connect();
+                Log.e("Status", "Device connected");
+                handler.obtainMessage(CONNECTING_STATUS, 1, -1).sendToTarget();
+            } catch (IOException connectException) {
+                // Unable to connect; close the socket and return.
+                try {
+                    mmSocket.close();
+                    Log.e("Status", "Cannot connect to device");
+                    handler.obtainMessage(CONNECTING_STATUS, -1, -1).sendToTarget();
+                } catch (IOException closeException) {
+                    Log.e("Bluetooth", "Could not close the client socket", closeException);
+                }
+                return;
             }
-            progress.dismiss();
+
+            // The connection attempt succeeded. Perform work associated with
+            // the connection in a separate thread.
+            connectedThread = new ConnectedThread(mmSocket);
+            connectedThread.run();
+        }
+
+        // Closes the client socket and causes the thread to finish.
+        public void cancel() {
+            try {
+                mmSocket.close();
+            } catch (IOException e) {
+                Log.e("Bluetooth", "Could not close the client socket", e);
+            }
+        }
+    }
+
+    /* =============================== Thread for Data Transfer =========================================== */
+    public static class ConnectedThread extends Thread {
+        private final BluetoothSocket mmSocket;
+        private final InputStream mmInStream;
+        private final OutputStream mmOutStream;
+
+        public ConnectedThread(BluetoothSocket socket) {
+            mmSocket = socket;
+            InputStream tmpIn = null;
+            OutputStream tmpOut = null;
+
+            // Get the input and output streams, using temp objects because
+            // member streams are final
+            try {
+                tmpIn = socket.getInputStream();
+                tmpOut = socket.getOutputStream();
+            } catch (IOException e) { }
+
+            mmInStream = tmpIn;
+            mmOutStream = tmpOut;
+        }
+
+        public void run() {
+            byte[] buffer = new byte[1024];  // buffer store for the stream
+            int bytes = 0; // bytes returned from read()
+            // Keep listening to the InputStream until an exception occurs
+            while (true) {
+                try {
+                    /*
+                    Read from the InputStream from Arduino until termination character is reached.
+                    Then send the whole String message to GUI Handler.
+                     */
+                    buffer[bytes] = (byte) mmInStream.read();
+                    String readMessage;
+                    if (buffer[bytes] == '\n'){
+                        readMessage = new String(buffer,0,bytes);
+                        Log.e("Arduino Message",readMessage);
+                        handler.obtainMessage(MESSAGE_READ,readMessage).sendToTarget();
+                        bytes = 0;
+                    } else {
+                        bytes++;
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    break;
+                }
+            }
+        }
+
+        /* Call this from the main activity to send data to the remote device */
+        public void write(String input) {
+            byte[] bytes = input.getBytes(); //converts entered String into bytes
+            try {
+                mmOutStream.write(bytes);
+            } catch (IOException e) {
+                Log.e("Send Error","Unable to send message",e);
+            }
+        }
+
+        /* Call this from the main activity to shutdown the connection */
+        public void cancel() {
+            try {
+                mmSocket.close();
+            } catch (IOException e) { }
         }
     }
 
 }
+
 
