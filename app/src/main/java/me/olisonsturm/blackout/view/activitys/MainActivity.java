@@ -32,8 +32,8 @@ import java.util.UUID;
 import me.olisonsturm.blackout.R;
 import me.olisonsturm.blackout.bluetooth.SelectDeviceActivity;
 import me.olisonsturm.blackout.model.PlayerViewModel;
-import me.olisonsturm.blackout.view.fragments.SpieleFragment;
 import me.olisonsturm.blackout.view.fragments.PlayerFragment;
+import me.olisonsturm.blackout.view.fragments.SpieleFragment;
 import me.olisonsturm.blackout.view.fragments.StatisticsFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -127,7 +127,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 case R.id.deletePlayers:
                     playerViewModel.deleteAllPlayers();
-                    connectedThread.write("3");
                     break;
             }
             return false;
@@ -135,10 +134,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         handler = new Handler(Looper.getMainLooper()) {
             @Override
-            public void handleMessage(Message msg){
-                switch (msg.what){
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
                     case CONNECTING_STATUS:
-                        switch(msg.arg1){
+                        switch (msg.arg1) {
                             case 1:
                                 toolbar.setSubtitle("Connected to " + deviceName);
                                 break;
@@ -150,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     case MESSAGE_READ:
                         String arduinoMsg = msg.obj.toString(); // Read message from Arduino
-                        switch (arduinoMsg.toLowerCase()){
+                        switch (arduinoMsg.toLowerCase()) {
                             case "led is turned on":
                                 //textViewInfo.setText("Arduino Message : " + arduinoMsg);
                                 break;
@@ -200,13 +199,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             super.onBackPressed();
         }
         // Terminate Bluetooth Connection and close app
-        if (createConnectThread != null){
+        if (createConnectThread != null) {
             createConnectThread.cancel();
         }
         Intent a = new Intent(Intent.ACTION_MAIN);
         a.addCategory(Intent.CATEGORY_HOME);
         a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(a);
+    }
+
+    public static void sendDataToBlackbox(String string) {
+        connectedThread.write(string);
+    }
+
+    public static void sendDataToBlackbox(int integer) {
+        connectedThread.write(String.valueOf(integer));
     }
 
     /* ============================ Thread to Create Bluetooth Connection =================================== */
@@ -283,7 +290,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             try {
                 tmpIn = socket.getInputStream();
                 tmpOut = socket.getOutputStream();
-            } catch (IOException e) { }
+            } catch (IOException e) {
+            }
 
             mmInStream = tmpIn;
             mmOutStream = tmpOut;
@@ -301,10 +309,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                      */
                     buffer[bytes] = (byte) mmInStream.read();
                     String readMessage;
-                    if (buffer[bytes] == '\n'){
-                        readMessage = new String(buffer,0,bytes);
-                        Log.e("Arduino Message",readMessage);
-                        handler.obtainMessage(MESSAGE_READ,readMessage).sendToTarget();
+                    if (buffer[bytes] == '\n') {
+                        readMessage = new String(buffer, 0, bytes);
+                        Log.e("Arduino Message", readMessage);
+                        handler.obtainMessage(MESSAGE_READ, readMessage).sendToTarget();
                         bytes = 0;
                     } else {
                         bytes++;
@@ -322,7 +330,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             try {
                 mmOutStream.write(bytes);
             } catch (IOException e) {
-                Log.e("Send Error","Unable to send message",e);
+                Log.e("Send Error", "Unable to send message", e);
             }
         }
 
@@ -330,7 +338,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         public void cancel() {
             try {
                 mmSocket.close();
-            } catch (IOException e) { }
+            } catch (IOException ignored) {
+            }
         }
     }
 

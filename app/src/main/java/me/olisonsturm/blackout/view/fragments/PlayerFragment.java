@@ -46,24 +46,15 @@ public class PlayerFragment extends Fragment {
         addBtn = view.findViewById(R.id.addNewPlayer);
         continueBtn = view.findViewById(R.id.startGameButton);
 
-
         RecyclerView recyclerView = view.findViewById(R.id.player_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setHasFixedSize(true);
 
-
         final PlayerListAdapter adapter = new PlayerListAdapter();
         recyclerView.setAdapter(adapter);
 
-
         playerViewModel = new ViewModelProvider((ViewModelStoreOwner) view.getContext()).get(PlayerViewModel.class);
-        playerViewModel.getAllPlayers().observe(getViewLifecycleOwner(), new Observer<List<Player>>() {
-            @Override
-            public void onChanged(List<Player> players) {
-                adapter.setPlayers(players);
-            }
-        });
-
+        playerViewModel.getAllPlayers().observe(getViewLifecycleOwner(), players -> adapter.setPlayers(players));
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -118,20 +109,12 @@ public class PlayerFragment extends Fragment {
         }).attachToRecyclerView(recyclerView);
 
 
-        continueBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new SpieleFragment()).commit();
-            }
-        });
+        continueBtn.setOnClickListener(v -> getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new SpieleFragment()).commit());
 
 
-        addBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BottomSheetPlayer bottomSheetPlayer = new BottomSheetPlayer();
-                bottomSheetPlayer.show(getParentFragmentManager(), "BottomSheetPlayer");
-            }
+        addBtn.setOnClickListener(v -> {
+            BottomSheetPlayer bottomSheetPlayer = new BottomSheetPlayer();
+            bottomSheetPlayer.show(getParentFragmentManager(), "BottomSheetPlayer");
         });
 
         return view;

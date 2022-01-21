@@ -1,14 +1,14 @@
 package me.olisonsturm.blackout.bluetooth;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -36,21 +36,19 @@ public class SelectDeviceActivity extends AppCompatActivity {
             for (BluetoothDevice device : pairedDevices) {
                 String deviceName = device.getName();
                 String deviceHardwareAddress = device.getAddress(); // MAC address
-                DeviceInfoModel deviceInfoModel = new DeviceInfoModel(deviceName,deviceHardwareAddress);
+                DeviceInfoModel deviceInfoModel = new DeviceInfoModel(deviceName, deviceHardwareAddress);
                 deviceList.add(deviceInfoModel);
             }
             // Display paired device using recyclerView
             RecyclerView recyclerView = findViewById(R.id.recyclerViewDevice);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            DeviceListAdapter deviceListAdapter = new DeviceListAdapter(this,deviceList);
+            DeviceListAdapter deviceListAdapter = new DeviceListAdapter(this, deviceList);
             recyclerView.setAdapter(deviceListAdapter);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
         } else {
             View view = findViewById(R.id.recyclerViewDevice);
             Snackbar snackbar = Snackbar.make(view, "Activate Bluetooth or pair a Bluetooth device", Snackbar.LENGTH_INDEFINITE);
-            snackbar.setAction("OK", new View.OnClickListener() {
-                @Override
-                public void onClick(View view) { }
+            snackbar.setAction("OK", view1 -> {
             });
             snackbar.show();
         }
