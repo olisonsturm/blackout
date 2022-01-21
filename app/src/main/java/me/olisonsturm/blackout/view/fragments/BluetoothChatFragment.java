@@ -365,6 +365,9 @@ public class BluetoothChatFragment extends Fragment {
         if (extras == null) {
             return;
         }
+
+
+        /*
         BluetoothDevice device = null;
 
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter
@@ -375,6 +378,8 @@ public class BluetoothChatFragment extends Fragment {
         }
         // Attempt to connect to the device
         mChatService.connect(device, secure);
+
+         */
     }
 
 

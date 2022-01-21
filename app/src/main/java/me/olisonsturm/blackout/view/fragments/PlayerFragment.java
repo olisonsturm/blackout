@@ -121,7 +121,7 @@ public class PlayerFragment extends Fragment {
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new SpieleFragment()).commit();
+                getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new BluetoothChatFragment()).commit();
             }
         });
 
