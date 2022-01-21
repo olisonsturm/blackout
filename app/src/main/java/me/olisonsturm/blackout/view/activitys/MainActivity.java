@@ -35,7 +35,7 @@ import me.olisonsturm.blackout.view.fragments.SpieleFragment;
 import me.olisonsturm.blackout.view.fragments.PlayerFragment;
 import me.olisonsturm.blackout.view.fragments.StatisticsFragment;
 
-public class LobbyActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, BottomSheetBluetooth.BottomSheetBluetoothListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, BottomSheetBluetooth.BottomSheetBluetoothListener {
 
     static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     Toolbar toolbar;
@@ -171,7 +171,7 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
 
         @Override
         protected void onPreExecute() {
-            progress = ProgressDialog.show(LobbyActivity.this, "Connecting to " + deviceName, "please wait!!!"); //show a progress dialog
+            progress = ProgressDialog.show(MainActivity.this, "Connecting to " + deviceName, "please wait!!!"); //show a progress dialog
         }
 
         @Override
@@ -198,9 +198,9 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
             super.onPreExecute();
 
             if (!ConnectSuccess) {
-                Toast.makeText(LobbyActivity.this, "Connection Failed. Is it a SPP Bluetooth? Try again!", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Connection Failed. Is it a SPP Bluetooth? Try again!", Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(LobbyActivity.this, "Connected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_SHORT).show();
             }
             progress.dismiss();
         }

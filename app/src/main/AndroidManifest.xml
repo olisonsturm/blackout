@@ -29,7 +29,7 @@
         </activity>
 
         <activity
-            android:name=".view.activitys.LobbyActivity"
+            android:name=".view.activitys.MainActivity"
             android:theme="@style/Theme.Blackout.NoActionBar" />
 
     </application>
