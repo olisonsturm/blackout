@@ -4,9 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.Intent;
+import android.bluetooth.BluetoothSocket;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -21,60 +21,66 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.Set;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.UUID;
 
 import me.olisonsturm.blackout.R;
 import me.olisonsturm.blackout.model.PlayerViewModel;
-import me.olisonsturm.blackout.view.fragments.PlayerFragment;
+import me.olisonsturm.blackout.util.BluetoothChatService;
+import me.olisonsturm.blackout.view.Infos.ConnectionInfo;
+import me.olisonsturm.blackout.view.fragments.BottomSheetBluetooth;
 import me.olisonsturm.blackout.view.fragments.SpieleFragment;
+import me.olisonsturm.blackout.view.fragments.PlayerFragment;
 import me.olisonsturm.blackout.view.fragments.StatisticsFragment;
-
-import static me.olisonsturm.blackout.view.fragments.BluetoothChatFragment.REQUEST_CONNECT_DEVICE_SECURE;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private Toolbar toolbar;
-    private NavigationView navigationView;
-    private ActionMenuItemView bluetoothIcon;
-
+    static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    Toolbar toolbar;
+    NavigationView navigationView;
+    ActionMenuItemView bluetoothIcon;
+    BluetoothAdapter bluetoothAdapter;
+    BluetoothSocket bluetoothSocket;
+    InputStream inputStream;
+    OutputStream outputStream;
+    String deviceName = null;
+    String deviceAddress = null;
     private DrawerLayout drawer;
     private ProgressDialog progress;
     private PlayerViewModel playerViewModel;
 
-    private BluetoothAdapter mBluetoothAdapter;
-    private BluetoothDevice mDevice;
+    private BluetoothChatService mChatService = null;
 
-    private void findBlackbox() {
-        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter
-                .getBondedDevices();
-        for (BluetoothDevice device : pairedDevices) {
-            if (device.getName().equals("HC-05") || device.getAddress().equalsIgnoreCase("98:D3:31:F9:CA:0A"))
-                this.mDevice = device;
-        }
-    }
-
-    @SuppressLint("RestrictedApi")
+    @SuppressLint({"NonConstantResourceId", "RestrictedApi"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
+        playerViewModel = new ViewModelProvider(this).get(PlayerViewModel.class);
 
         drawer = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.myToolbar);
         navigationView = findViewById(R.id.nav_view);
         bluetoothIcon = (ActionMenuItemView) findViewById(R.id.bluetoothCheck);
 
-        playerViewModel = new ViewModelProvider(this).get(PlayerViewModel.class);
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        new ConnectionInfo(false);
+
 
         //check to set bluetooth Icon
-        if (!mBluetoothAdapter.isEnabled()) {
+        if (!bluetoothAdapter.isEnabled()) {
             bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_off));
-        } else if (mBluetoothAdapter.isDiscovering()) {
-            bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_discovering));
         } else {
             bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_on));
         }
+
+        if (bluetoothAdapter.isDiscovering()) {
+            bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_discovering));
+        }
+
 
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -87,20 +93,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.setCheckedItem(R.id.nav_lobby);
         }
 
+
         toolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.bluetoothCheck:
-                    if (!mBluetoothAdapter.isEnabled()) {
-                        mBluetoothAdapter.enable();
+                    if (!bluetoothAdapter.isEnabled()) {
+                        bluetoothAdapter.enable();
                         bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_on));
+
                     } else {
-                        if (!mBluetoothAdapter.isDiscovering()) {
-                            mBluetoothAdapter.startDiscovery();
+                        if (!bluetoothAdapter.isDiscovering()) {
+                            bluetoothAdapter.startDiscovery();
                             bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_discovering));
                         }
-                        // Bluetooth an und am Suchen
-                        Intent serverIntent = new Intent(this, DeviceListActivity.class);
-                        startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_SECURE);
+
+                        BottomSheetBluetooth bottomSheetBluetooth = new BottomSheetBluetooth();
+                        bottomSheetBluetooth.show(getSupportFragmentManager(), "exampleBottomSheet");
                     }
                     break;
 
@@ -149,6 +157,44 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    private class ConnectBT extends AsyncTask<Void, Void, Void> {
+        private boolean ConnectSuccess = true; // UI thread
+
+        @Override
+        protected void onPreExecute() {
+            progress = ProgressDialog.show(MainActivity.this, "Connecting to " + deviceName, "please wait!!!"); //show a progress dialog
+        }
+
+        @Override
+        protected Void doInBackground(Void... devices) { //while the progress dialog is shown, the connection is done in background
+            try {
+                if (bluetoothSocket == null || !ConnectionInfo.isConnected()) {
+                    bluetoothAdapter = BluetoothAdapter.getDefaultAdapter(); //get the mobile bluetooth device
+                    BluetoothDevice dispositivo = bluetoothAdapter.getRemoteDevice("98:D3:31:F9:CA:0A");//connects to the device's address and checks if it's available
+                    bluetoothSocket = dispositivo.createInsecureRfcommSocketToServiceRecord(myUUID); //create a RFCOMM (SPP) connection
+                    BluetoothAdapter.getDefaultAdapter().cancelDiscovery(); //stop Discovery
+                    bluetoothSocket.connect();//start connection
+                    outputStream = bluetoothSocket.getOutputStream();
+                    inputStream = bluetoothSocket.getInputStream();
+                }
+            } catch (IOException e) {
+                ConnectSuccess = false; //if the try failed, you can check the exception here
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {  // after doInBackground to check if everything went fine
+            super.onPreExecute();
+
+            if (!ConnectSuccess) {
+                Toast.makeText(MainActivity.this, "Connection Failed. Is it a SPP Bluetooth? Try again!", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_SHORT).show();
+            }
+            progress.dismiss();
+        }
+    }
 
 }
-
