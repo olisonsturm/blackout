@@ -22,6 +22,7 @@ public class Player {
     private int gameCount;
     private int score;
 
+
     public Player(String nickName, String realName, int gender, int priority) {
         this.nickName = nickName;
         this.realName = realName;

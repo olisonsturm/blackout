@@ -21,6 +21,15 @@ import me.olisonsturm.blackout.R;
 
 public class SpieleFragment extends Fragment {
 
+    TextView textView;
+    EditText editText;
+    Button btn;
+
+    BluetoothAdapter bluetoothAdapter;
+    BluetoothSocket bluetoothSocket;
+    InputStream inputStream;
+    OutputStream outputStream;
+
 
     @Nullable
     @Override

@@ -12,6 +12,9 @@ import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -22,11 +25,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-
-import java.util.Set;
 
 import me.olisonsturm.blackout.R;
 import me.olisonsturm.blackout.util.BluetoothChatService;
@@ -41,7 +43,7 @@ public class BluetoothChatFragment extends Fragment {
     private static final String TAG = "BluetoothChatFragment";
 
     // Intent request codes
-    public static final int REQUEST_CONNECT_DEVICE_SECURE = 1;
+    private static final int REQUEST_CONNECT_DEVICE_SECURE = 1;
     private static final int REQUEST_CONNECT_DEVICE_INSECURE = 2;
     private static final int REQUEST_ENABLE_BT = 3;
 
@@ -365,22 +367,17 @@ public class BluetoothChatFragment extends Fragment {
         if (extras == null) {
             return;
         }
-
-
-
-        BluetoothDevice device = null;
-
-        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter
-                .getBondedDevices();
-        for (BluetoothDevice deviceTmp : pairedDevices) {
-            if (device.getName().equals("HC-05") || device.getAddress().equalsIgnoreCase("98:D3:31:F9:CA:0A"))
-                device = deviceTmp;
-        }
+        /*
+        String address = extras.getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
+        // Get the BluetoothDevice object
+        BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
         // Attempt to connect to the device
         mChatService.connect(device, secure);
 
-
+         */
     }
+
+
 
 
 /*

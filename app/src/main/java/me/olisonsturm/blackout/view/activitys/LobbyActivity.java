@@ -35,7 +35,7 @@ import me.olisonsturm.blackout.view.fragments.SpieleFragment;
 import me.olisonsturm.blackout.view.fragments.PlayerFragment;
 import me.olisonsturm.blackout.view.fragments.StatisticsFragment;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class LobbyActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, BottomSheetBluetooth.BottomSheetBluetoothListener {
 
     static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     Toolbar toolbar;
@@ -157,12 +157,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+
+    @Override
+    public void onItemClicked(String name, String address) {
+        deviceName = name;
+        deviceAddress = address;
+        new ConnectBT().execute();
+        //mChatService.connect(device, secure);
+    }
+
     private class ConnectBT extends AsyncTask<Void, Void, Void> {
         private boolean ConnectSuccess = true; // UI thread
 
         @Override
         protected void onPreExecute() {
-            progress = ProgressDialog.show(MainActivity.this, "Connecting to " + deviceName, "please wait!!!"); //show a progress dialog
+            progress = ProgressDialog.show(LobbyActivity.this, "Connecting to " + deviceName, "please wait!!!"); //show a progress dialog
         }
 
         @Override
@@ -170,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             try {
                 if (bluetoothSocket == null || !ConnectionInfo.isConnected()) {
                     bluetoothAdapter = BluetoothAdapter.getDefaultAdapter(); //get the mobile bluetooth device
-                    BluetoothDevice dispositivo = bluetoothAdapter.getRemoteDevice("98:D3:31:F9:CA:0A");//connects to the device's address and checks if it's available
+                    BluetoothDevice dispositivo = bluetoothAdapter.getRemoteDevice(deviceAddress);//connects to the device's address and checks if it's available
                     bluetoothSocket = dispositivo.createInsecureRfcommSocketToServiceRecord(myUUID); //create a RFCOMM (SPP) connection
                     BluetoothAdapter.getDefaultAdapter().cancelDiscovery(); //stop Discovery
                     bluetoothSocket.connect();//start connection
@@ -189,12 +198,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             super.onPreExecute();
 
             if (!ConnectSuccess) {
-                Toast.makeText(MainActivity.this, "Connection Failed. Is it a SPP Bluetooth? Try again!", Toast.LENGTH_LONG).show();
+                Toast.makeText(LobbyActivity.this, "Connection Failed. Is it a SPP Bluetooth? Try again!", Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LobbyActivity.this, "Connected", Toast.LENGTH_SHORT).show();
             }
             progress.dismiss();
         }
     }
 
 }
+

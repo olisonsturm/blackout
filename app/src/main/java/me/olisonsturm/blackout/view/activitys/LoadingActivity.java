@@ -25,7 +25,7 @@ public class LoadingActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         new Handler().postDelayed(() -> {
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, LobbyActivity.class));
             finish();
         }, 2000);
     }
