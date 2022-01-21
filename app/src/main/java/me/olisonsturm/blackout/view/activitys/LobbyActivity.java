@@ -28,9 +28,10 @@ import java.util.UUID;
 
 import me.olisonsturm.blackout.R;
 import me.olisonsturm.blackout.model.PlayerViewModel;
+import me.olisonsturm.blackout.util.BluetoothChatService;
 import me.olisonsturm.blackout.view.Infos.ConnectionInfo;
 import me.olisonsturm.blackout.view.fragments.BottomSheetBluetooth;
-import me.olisonsturm.blackout.view.fragments.GamingFragment;
+import me.olisonsturm.blackout.view.fragments.SpieleFragment;
 import me.olisonsturm.blackout.view.fragments.PlayerFragment;
 import me.olisonsturm.blackout.view.fragments.StatisticsFragment;
 
@@ -49,6 +50,8 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
     private DrawerLayout drawer;
     private ProgressDialog progress;
     private PlayerViewModel playerViewModel;
+
+    private BluetoothChatService mChatService = null;
 
     @SuppressLint({"NonConstantResourceId", "RestrictedApi"})
     @Override
@@ -126,7 +129,7 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
                 break;
 
             case R.id.nav_gaming:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new GamingFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SpieleFragment()).commit();
                 break;
 
             case R.id.nav_statistics:
@@ -159,6 +162,8 @@ public class LobbyActivity extends AppCompatActivity implements NavigationView.O
     public void onItemClicked(String name, String address) {
         deviceName = name;
         deviceAddress = address;
+        new ConnectBT().execute();
+        //mChatService.connect(device, secure);
     }
 
     private class ConnectBT extends AsyncTask<Void, Void, Void> {

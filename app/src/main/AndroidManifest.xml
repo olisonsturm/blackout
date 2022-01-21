@@ -25,7 +25,6 @@
         <activity
             android:name=".view.activitys.LobbyActivity"
             android:theme="@style/Theme.Blackout.NoActionBar" />
-        <activity android:name=".view.activitys.SpielExampleActivity" />
 
 
     </application>

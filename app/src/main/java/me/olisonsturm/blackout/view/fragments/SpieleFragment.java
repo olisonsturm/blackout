@@ -19,41 +19,13 @@ import java.io.OutputStream;
 
 import me.olisonsturm.blackout.R;
 
-public class GamingFragment extends Fragment {
-
-    TextView textView;
-    EditText editText;
-    Button btn;
-
-    BluetoothAdapter bluetoothAdapter;
-    BluetoothSocket bluetoothSocket;
-    InputStream inputStream;
-    OutputStream outputStream;
+public class SpieleFragment extends Fragment {
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstance) {
         View view = inflater.inflate(R.layout.fragment_spiele, container, false);
-
-        textView = view.findViewById(R.id.anzeige);
-        editText = view.findViewById(R.id.data_send);
-        btn = view.findViewById(R.id.send_btn);
-
-
-
-        try {
-            outputStream = bluetoothSocket.getOutputStream();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            inputStream = bluetoothSocket.getInputStream();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
 
         return view;
     }
