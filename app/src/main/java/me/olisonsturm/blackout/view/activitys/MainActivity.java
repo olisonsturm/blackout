@@ -38,7 +38,6 @@ import me.olisonsturm.blackout.view.fragments.StatisticsFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-
     private Toolbar toolbar;
     private NavigationView navigationView;
     private ActionMenuItemView bluetoothIcon;
@@ -54,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter
                 .getBondedDevices();
         for (BluetoothDevice device : pairedDevices) {
-            if (device.getName().equals("Blackbox"))
+            if (device.getName().equals("HC-05") || device.getAddress().equalsIgnoreCase("98:D3:31:F9:CA:0A"))
                 this.mDevice = device;
         }
     }
@@ -64,28 +63,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
-        playerViewModel = new ViewModelProvider(this).get(PlayerViewModel.class);
 
         drawer = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.myToolbar);
         navigationView = findViewById(R.id.nav_view);
         bluetoothIcon = (ActionMenuItemView) findViewById(R.id.bluetoothCheck);
 
+        playerViewModel = new ViewModelProvider(this).get(PlayerViewModel.class);
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-
-
 
         //check to set bluetooth Icon
         if (!mBluetoothAdapter.isEnabled()) {
             bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_off));
+        } else if (mBluetoothAdapter.isDiscovering()) {
+            bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_discovering));
         } else {
             bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_on));
         }
-
-        if (mBluetoothAdapter.isDiscovering()) {
-            bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_discovering));
-        }
-
 
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -97,7 +91,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PlayerFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_lobby);
         }
-
 
         toolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {

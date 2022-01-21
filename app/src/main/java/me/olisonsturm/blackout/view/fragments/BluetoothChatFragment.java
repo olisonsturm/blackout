@@ -374,7 +374,7 @@ public class BluetoothChatFragment extends Fragment {
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter
                 .getBondedDevices();
         for (BluetoothDevice deviceTmp : pairedDevices) {
-            if (deviceTmp.getName().equals("HC-05"))
+            if (device.getName().equals("HC-05") || device.getAddress().equalsIgnoreCase("98:D3:31:F9:CA:0A"))
                 device = deviceTmp;
 
             // Attempt to connect to the device
