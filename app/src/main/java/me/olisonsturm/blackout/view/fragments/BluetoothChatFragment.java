@@ -12,9 +12,6 @@ import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -25,7 +22,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -45,7 +41,7 @@ public class BluetoothChatFragment extends Fragment {
     private static final String TAG = "BluetoothChatFragment";
 
     // Intent request codes
-    private static final int REQUEST_CONNECT_DEVICE_SECURE = 1;
+    public static final int REQUEST_CONNECT_DEVICE_SECURE = 1;
     private static final int REQUEST_CONNECT_DEVICE_INSECURE = 2;
     private static final int REQUEST_ENABLE_BT = 3;
 
@@ -376,10 +372,9 @@ public class BluetoothChatFragment extends Fragment {
         for (BluetoothDevice deviceTmp : pairedDevices) {
             if (device.getName().equals("HC-05") || device.getAddress().equalsIgnoreCase("98:D3:31:F9:CA:0A"))
                 device = deviceTmp;
-
-            // Attempt to connect to the device
-            mChatService.connect(device, secure);
         }
+        // Attempt to connect to the device
+        mChatService.connect(device, secure);
     }
 
 

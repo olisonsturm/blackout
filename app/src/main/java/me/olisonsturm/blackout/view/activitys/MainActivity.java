@@ -4,8 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
-import android.os.AsyncTask;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -21,20 +20,15 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.navigation.NavigationView;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Set;
-import java.util.UUID;
 
 import me.olisonsturm.blackout.R;
 import me.olisonsturm.blackout.model.PlayerViewModel;
-import me.olisonsturm.blackout.util.BluetoothChatService;
-import me.olisonsturm.blackout.view.Infos.ConnectionInfo;
-import me.olisonsturm.blackout.view.fragments.BottomSheetBluetooth;
-import me.olisonsturm.blackout.view.fragments.SpieleFragment;
 import me.olisonsturm.blackout.view.fragments.PlayerFragment;
+import me.olisonsturm.blackout.view.fragments.SpieleFragment;
 import me.olisonsturm.blackout.view.fragments.StatisticsFragment;
+
+import static me.olisonsturm.blackout.view.fragments.BluetoothChatFragment.REQUEST_CONNECT_DEVICE_SECURE;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -58,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    @SuppressLint({"NonConstantResourceId", "RestrictedApi"})
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,9 +97,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             mBluetoothAdapter.startDiscovery();
                             bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_discovering));
                         }
-
-                        BottomSheetBluetooth bottomSheetBluetooth = new BottomSheetBluetooth();
-                        bottomSheetBluetooth.show(getSupportFragmentManager(), "exampleBottomSheet");
+                        // Bluetooth an und am Suchen
+                        Intent serverIntent = new Intent(this, DeviceListActivity.class);
+                        startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_SECURE);
                     }
                     break;
 

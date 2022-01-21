@@ -32,6 +32,11 @@
             android:name=".view.activitys.MainActivity"
             android:theme="@style/Theme.Blackout.NoActionBar" />
 
+        <activity
+            android:name=".view.activitys.DeviceListActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:theme="@android:style/Theme.Holo.Dialog" />
+
     </application>
 
 </manifest>
