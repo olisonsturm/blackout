@@ -5,24 +5,16 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import me.olisonsturm.blackout.R;
-import me.olisonsturm.blackout.model.Player;
-import me.olisonsturm.blackout.model.PlayerViewModel;
 
 public class BottomSheetPlayer extends BottomSheetDialogFragment {
 
@@ -30,43 +22,32 @@ public class BottomSheetPlayer extends BottomSheetDialogFragment {
     ImageView genderBtn;
     EditText nickName;
     EditText realName;
-    EditText editTextPriority;
-
     int gender = 0;
-
-    private PlayerViewModel playerViewModel;
-
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.bottom_sheet_player_layout, container, false);
-        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-
 
         addBtn = view.findViewById(R.id.playerAdd);
         genderBtn = view.findViewById(R.id.genderButton);
         nickName = view.findViewById(R.id.playerNickName);
         realName = view.findViewById(R.id.playerRealName);
-        editTextPriority = view.findViewById(R.id.eTPriority);
 
-        playerViewModel = new ViewModelProvider(this).get(PlayerViewModel.class);
         genderBtn.setImageResource(R.drawable.male);
 
         addBtn.setOnClickListener(v -> {
             String nickNameL = nickName.getText().toString();
             String realNameL = realName.getText().toString();
-            String priority = editTextPriority.getText().toString();
 
-            if (TextUtils.isEmpty(nickNameL) || TextUtils.isEmpty(realNameL) || TextUtils.isEmpty(priority)) {
+            if (TextUtils.isEmpty(nickNameL) || TextUtils.isEmpty(realNameL)) {
                 Toast.makeText(view.getContext(), "Bitte alle Spielerdaten eingeben", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(view.getContext(), "save", Toast.LENGTH_SHORT).show();
-                Player player = new Player(nickNameL, realNameL, gender, Integer.parseInt(priority));
-                playerViewModel.insert(player);
+                // player speichern
                 dismiss();
             }
         });
+
 
         genderBtn.setOnClickListener(v -> {
             gender = gender + 1;
@@ -85,6 +66,7 @@ public class BottomSheetPlayer extends BottomSheetDialogFragment {
                     break;
             }
         });
+
 
         return view;
     }
