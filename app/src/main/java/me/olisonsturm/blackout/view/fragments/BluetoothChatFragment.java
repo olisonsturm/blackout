@@ -374,7 +374,7 @@ public class BluetoothChatFragment extends Fragment {
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter
                 .getBondedDevices();
         for (BluetoothDevice deviceTmp : pairedDevices) {
-            if (deviceTmp.getName().equals("Blackbox"))
+            if (deviceTmp.getName().equals("HC-05"))
                 device = deviceTmp;
 
             // Attempt to connect to the device

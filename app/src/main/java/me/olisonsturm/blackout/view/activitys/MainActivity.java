@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter
                 .getBondedDevices();
         for (BluetoothDevice device : pairedDevices) {
-            if (device.getName().equals("raspberrypi"))
+            if (device.getName().equals("Blackbox"))
                 this.mDevice = device;
         }
     }
