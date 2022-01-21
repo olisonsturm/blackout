@@ -1,5 +1,6 @@
 package me.olisonsturm.blackout.view.fragments;
 
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import me.olisonsturm.blackout.R;
 import me.olisonsturm.blackout.model.Player;
 import me.olisonsturm.blackout.model.PlayerViewModel;
+import me.olisonsturm.blackout.view.activitys.TestActivity;
 import me.olisonsturm.blackout.view.adapter.PlayerListAdapter;
 
 
@@ -121,7 +123,8 @@ public class PlayerFragment extends Fragment {
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new BluetoothChatFragment()).commit();
+                //getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new BluetoothChatFragment()).commit();
+                startActivity(new Intent(getContext(), TestActivity.class));
             }
         });
 

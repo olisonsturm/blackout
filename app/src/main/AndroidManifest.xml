@@ -37,6 +37,9 @@
             android:configChanges="orientation|keyboardHidden"
             android:theme="@android:style/Theme.Holo.Dialog" />
 
+        <activity
+            android:name=".view.activitys.TestActivity" />
+
     </application>
 
 </manifest>
