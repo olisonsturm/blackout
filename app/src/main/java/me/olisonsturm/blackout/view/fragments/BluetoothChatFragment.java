@@ -30,6 +30,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+import java.util.Set;
+
 import me.olisonsturm.blackout.R;
 import me.olisonsturm.blackout.util.BluetoothChatService;
 import me.olisonsturm.blackout.util.Constants;
@@ -367,17 +369,18 @@ public class BluetoothChatFragment extends Fragment {
         if (extras == null) {
             return;
         }
-        /*
-        String address = extras.getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
-        // Get the BluetoothDevice object
-        BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
-        // Attempt to connect to the device
-        mChatService.connect(device, secure);
+        BluetoothDevice device = null;
 
-         */
+        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter
+                .getBondedDevices();
+        for (BluetoothDevice deviceTmp : pairedDevices) {
+            if (deviceTmp.getName().equals("Blackbox"))
+                device = deviceTmp;
+
+            // Attempt to connect to the device
+            mChatService.connect(device, secure);
+        }
     }
-
-
 
 
 /*

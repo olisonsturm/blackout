@@ -35,23 +35,19 @@ import me.olisonsturm.blackout.view.fragments.SpieleFragment;
 import me.olisonsturm.blackout.view.fragments.PlayerFragment;
 import me.olisonsturm.blackout.view.fragments.StatisticsFragment;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, BottomSheetBluetooth.BottomSheetBluetoothListener {
+public class MainActivity extends AppCompatActivity {
 
-    static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-    Toolbar toolbar;
-    NavigationView navigationView;
-    ActionMenuItemView bluetoothIcon;
-    BluetoothAdapter bluetoothAdapter;
-    BluetoothSocket bluetoothSocket;
-    InputStream inputStream;
-    OutputStream outputStream;
-    String deviceName = null;
-    String deviceAddress = null;
+
+    private Toolbar toolbar;
+    private NavigationView navigationView;
+    private ActionMenuItemView bluetoothIcon;
+
     private DrawerLayout drawer;
     private ProgressDialog progress;
     private PlayerViewModel playerViewModel;
 
-    private BluetoothChatService mChatService = null;
+    private BluetoothAdapter mBluetoothAdapter;
+    private BluetoothDevice mDevice;
 
     @SuppressLint({"NonConstantResourceId", "RestrictedApi"})
     @Override
@@ -65,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView = findViewById(R.id.nav_view);
         bluetoothIcon = (ActionMenuItemView) findViewById(R.id.bluetoothCheck);
 
-        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         new ConnectionInfo(false);
 
@@ -100,7 +96,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     if (!bluetoothAdapter.isEnabled()) {
                         bluetoothAdapter.enable();
                         bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_on));
-
                     } else {
                         if (!bluetoothAdapter.isDiscovering()) {
                             bluetoothAdapter.startDiscovery();
@@ -157,54 +152,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
-    @Override
-    public void onItemClicked(String name, String address) {
-        deviceName = name;
-        deviceAddress = address;
-        new ConnectBT().execute();
-        //mChatService.connect(device, secure);
-    }
-
-    private class ConnectBT extends AsyncTask<Void, Void, Void> {
-        private boolean ConnectSuccess = true; // UI thread
-
-        @Override
-        protected void onPreExecute() {
-            progress = ProgressDialog.show(MainActivity.this, "Connecting to " + deviceName, "please wait!!!"); //show a progress dialog
-        }
-
-        @Override
-        protected Void doInBackground(Void... devices) { //while the progress dialog is shown, the connection is done in background
-            try {
-                if (bluetoothSocket == null || !ConnectionInfo.isConnected()) {
-                    bluetoothAdapter = BluetoothAdapter.getDefaultAdapter(); //get the mobile bluetooth device
-                    BluetoothDevice dispositivo = bluetoothAdapter.getRemoteDevice(deviceAddress);//connects to the device's address and checks if it's available
-                    bluetoothSocket = dispositivo.createInsecureRfcommSocketToServiceRecord(myUUID); //create a RFCOMM (SPP) connection
-                    BluetoothAdapter.getDefaultAdapter().cancelDiscovery(); //stop Discovery
-                    bluetoothSocket.connect();//start connection
-                    outputStream = bluetoothSocket.getOutputStream();
-                    inputStream = bluetoothSocket.getInputStream();
-                }
-            } catch (IOException e) {
-                ConnectSuccess = false; //if the try failed, you can check the exception here
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {  // after doInBackground to check if everything went fine
-            super.onPreExecute();
-
-            if (!ConnectSuccess) {
-                Toast.makeText(MainActivity.this, "Connection Failed. Is it a SPP Bluetooth? Try again!", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_SHORT).show();
-            }
-            progress.dismiss();
-        }
-    }
 
 }
 
