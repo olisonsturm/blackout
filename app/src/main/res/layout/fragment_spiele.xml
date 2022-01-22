@@ -14,17 +14,14 @@
         android:foreground="?android:attr/selectableItemBackground"
         app:cardCornerRadius="10dp">
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
 
                 <ImageView
                     android:id="@+id/image1"
@@ -32,7 +29,6 @@
                     android:layout_height="88dp"
                     android:background="@drawable/layout_cut_corners"
                     android:src="@drawable/male" />
-
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -50,8 +46,8 @@
                     android:layout_centerInParent="true"
                     android:src="@drawable/ic_expand_more" />
 
-
             </RelativeLayout>
+
 
             <TextView
                 android:id="@+id/hiddenTextGame1"
@@ -61,14 +57,11 @@
                 sdfsffsjdfkshfkshfksjhsd sdfdsfsdfsdfsdfsdfs
                 sdfsdfsdfsdfdsfsfd
                 sdfsdfdsddddfgdfggf"
-                android:visibility="gone"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:visibility="gone" />
             <!-- android:visibility="gone" -->
 
-
-
         </LinearLayout>
-
 
     </androidx.cardview.widget.CardView>
 
@@ -76,40 +69,180 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/card2"
         android:layout_width="match_parent"
-        android:layout_height="88dp"
-        android:layout_margin="8dp">
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardCornerRadius="10dp">
 
-
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <ImageView
-                android:layout_width="88dp"
-                android:layout_height="88dp"
-                android:background="@drawable/layout_cut_corners"
-                android:src="@drawable/male" />
+                <ImageView
+                    android:id="@+id/image2"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:background="@drawable/layout_cut_corners"
+                    android:src="@drawable/male" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_toEndOf="@+id/image2"
+                    android:text="Spiel 2"
+                    android:textSize="50sp" />
+
+                <ImageButton
+                    android:id="@+id/btn_game2"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_expand_more" />
+
+            </RelativeLayout>
 
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/hiddenTextGame2"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Spiel 2"
-                android:textSize="50sp" />
+                android:text="Example Text sdfssdfsdf
+                sdfsffsjdfkshfkshfksjhsd sdfdsfsdfsdfsdfsdfs
+                sdfsdfsdfsdfdsfsfd
+                sdfsdfdsddddfgdfggf"
+                android:textSize="20sp"
+                android:visibility="gone" />
+            <!-- android:visibility="gone" -->
 
-            <ImageButton
-                android:id="@+id/btn_game2"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerInParent="true"
-                android:src="@drawable/ic_info" />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardCornerRadius="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/image3"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:background="@drawable/layout_cut_corners"
+                    android:src="@drawable/male" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_toEndOf="@+id/image3"
+                    android:text="Spiel 3"
+                    android:textSize="50sp" />
+
+                <ImageButton
+                    android:id="@+id/btn_game3"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_expand_more" />
+
+            </RelativeLayout>
 
 
-        </RelativeLayout>
+            <TextView
+                android:id="@+id/hiddenTextGame3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Example Text sdfssdfsdf
+                sdfsffsjdfkshfkshfksjhsd sdfdsfsdfsdfsdfsdfs
+                sdfsdfsdfsdfdsfsfd
+                sdfsdfdsddddfgdfggf"
+                android:textSize="20sp"
+                android:visibility="gone" />
+            <!-- android:visibility="gone" -->
 
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardCornerRadius="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/image4"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:background="@drawable/layout_cut_corners"
+                    android:src="@drawable/male" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_toEndOf="@+id/image4"
+                    android:text="Spiel 4"
+                    android:textSize="50sp" />
+
+                <ImageButton
+                    android:id="@+id/btn_game4"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_expand_more" />
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/hiddenTextGame4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Example Text sdfssdfsdf
+                sdfsffsjdfkshfkshfksjhsd sdfdsfsdfsdfsdfsdfs
+                sdfsdfsdfsdfdsfsfd
+                sdfsdfdsddddfgdfggf"
+                android:textSize="20sp"
+                android:visibility="gone" />
+            <!-- android:visibility="gone" -->
+
+        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 
