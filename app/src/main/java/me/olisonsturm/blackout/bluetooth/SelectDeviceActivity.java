@@ -35,9 +35,15 @@ public class SelectDeviceActivity extends AppCompatActivity {
             // There are paired devices. Get the name and address of each paired device.
             for (BluetoothDevice device : pairedDevices) {
                 String deviceName = device.getName();
-                String deviceHardwareAddress = device.getAddress(); // MAC address
-                DeviceInfoModel deviceInfoModel = new DeviceInfoModel(deviceName, deviceHardwareAddress);
-                deviceList.add(deviceInfoModel);
+                if (deviceName.equalsIgnoreCase("HC-05") || deviceName.equalsIgnoreCase("raspberrypi")) {
+                    String deviceHardwareAddress = device.getAddress(); // MAC address
+                    DeviceInfoModel deviceInfoModel = new DeviceInfoModel(deviceName, deviceHardwareAddress);
+                    deviceList.add(deviceInfoModel);
+                }
+            }
+            if (deviceList.size() == 0) {
+                DeviceInfoModel noDevice = new DeviceInfoModel("Keine Blackbox gefunden", "Versuchen Sie die Blackbox manuell zuverbinden");
+                deviceList.add(noDevice);
             }
             // Display paired device using recyclerView
             RecyclerView recyclerView = findViewById(R.id.recyclerViewDevice);

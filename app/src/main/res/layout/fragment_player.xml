@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:hint="Start Game ..." />
+            android:text="Start Game ..." />
 
     </RelativeLayout>
 
@@ -35,8 +35,7 @@
         android:layout_below="@+id/relativeLay"
         android:id="@+id/player_recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
+        android:layout_height="match_parent"
         tools:listitem="@layout/player_item" />
 
 

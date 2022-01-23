@@ -2,8 +2,9 @@ package me.olisonsturm.blackout.view.activitys;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothSocket;
+import android.content.ClipData;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -15,7 +16,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.ActionMenuItemView;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
@@ -61,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toolbar = findViewById(R.id.myToolbar);
         banner = findViewById(R.id.banner);
         navigationView = findViewById(R.id.nav_view);
-        bluetoothIcon = (ActionMenuItemView) findViewById(R.id.bluetoothCheck);
+        bluetoothIcon = findViewById(R.id.bluetoothCheck);
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
@@ -146,8 +150,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                     break;
                 case R.id.deletePlayers:
-                    //playerViewModel.deleteAllPlayers();
-                    ConnectedThread.sendDataToBlackbox("3");
+                    playerViewModel.deleteAllPlayers();
                     break;
             }
             return false;
@@ -200,7 +203,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-
 //    public static void sendDataToBlackbox(String string) {
 //        connectedThread.write(string);
 //    }
@@ -208,10 +210,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //    public static void sendDataToBlackbox(int integer) {
 //        connectedThread.write(String.valueOf(integer));
 //    }
-/*
+    /*
 
-    */
-/* ============================ Thread to Create Bluetooth Connection =================================== *//*
+     */
+    /* ============================ Thread to Create Bluetooth Connection =================================== *//*
 
     public static class CreateConnectThread extends Thread {
 
@@ -273,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     */
-/* =============================== Thread for Data Transfer =========================================== *//*
+    /* =============================== Thread for Data Transfer =========================================== *//*
 
     public static class ConnectedThread extends Thread {
         private final BluetoothSocket mmSocket;
@@ -327,7 +329,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         */
-/* Call this from the main activity to send data to the remote device *//*
+    /* Call this from the main activity to send data to the remote device *//*
 
         public void write(String input) {
             byte[] bytes = input.getBytes(); //converts entered String into bytes
@@ -339,7 +341,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         */
-/* Call this from the main activity to shutdown the connection *//*
+    /* Call this from the main activity to shutdown the connection *//*
 
         public void cancel() {
             try {

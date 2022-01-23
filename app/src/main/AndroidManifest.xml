@@ -33,7 +33,8 @@
             android:theme="@style/Theme.Blackout.NoActionBar" />
 
         <activity
-            android:name=".bluetooth.SelectDeviceActivity" />
+            android:name=".bluetooth.SelectDeviceActivity"
+            android:label="Verbinde Blackbox"/>
 
     </application>
 

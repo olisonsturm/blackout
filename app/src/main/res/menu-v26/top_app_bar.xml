@@ -9,6 +9,7 @@
         app:showAsAction="never" />
     <item
         android:id="@+id/bluetoothCheck"
+        android:iconTint="@color/dark_grey"
         android:icon="@drawable/ic_bluetooth_off"
         android:title="@string/bluetooth"
         app:showAsAction="ifRoom" />

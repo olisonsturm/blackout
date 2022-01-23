@@ -2,6 +2,7 @@ package me.olisonsturm.blackout.bluetooth;
 
 import android.content.Context;
 import android.content.Intent;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,8 +60,13 @@ public class DeviceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             intent.putExtra("deviceName", deviceInfoModel.getDeviceName());
             intent.putExtra("deviceAddress", deviceInfoModel.getDeviceHardwareAddress());
             // Call MainActivity
-            context.startActivity(intent);
-
+            if (deviceInfoModel.getDeviceHardwareAddress().contains(":")) {
+                context.startActivity(intent);
+            } else {
+                Intent i = new Intent();
+                i.setAction(Settings.ACTION_BLUETOOTH_SETTINGS);
+                context.startActivity(i);
+            }
         });
     }
 
