@@ -89,7 +89,7 @@ public class GamesFragment extends Fragment {
                 //schließen
                 TransitionManager.beginDelayedTransition(card2, new ChangeTransform());
                 text2.setVisibility(View.GONE);
-                expandBtn1.setImageResource(R.drawable.ic_expand_more);
+                expandBtn2.setImageResource(R.drawable.ic_expand_more);
             }
             else{
                 //öffnen
@@ -104,7 +104,7 @@ public class GamesFragment extends Fragment {
                 //schließen
                 TransitionManager.beginDelayedTransition(card3, new ChangeTransform());
                 text3.setVisibility(View.GONE);
-                expandBtn1.setImageResource(R.drawable.ic_expand_more);
+                expandBtn3.setImageResource(R.drawable.ic_expand_more);
             }
             else{
                 //öffnen
