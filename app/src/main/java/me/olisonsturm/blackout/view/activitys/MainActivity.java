@@ -85,8 +85,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case ConnectedThread.MESSAGE_READ:
                         String arduinoMsg = msg.obj.toString(); // Read message from Arduino
                         switch (arduinoMsg.toLowerCase()) {
-                            case "led is turned on":
-                                //textViewInfo.setText("Arduino Message : " + arduinoMsg);
+                            case "3":
+                                banner.setTitle("Von Blackbox zurück bekommen: 3");
                                 break;
                             case "led is turned off":
                                 //textViewInfo.setText("Arduino Message : " + arduinoMsg);
