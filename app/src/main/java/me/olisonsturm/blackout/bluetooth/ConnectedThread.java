@@ -64,8 +64,16 @@ public class ConnectedThread extends Thread {
     }
 
     /* Call this from the main activity to send data to the remote device */
-    public static void sendDataToBlackbox(String input) {
-        byte[] bytes = input.getBytes(); //converts entered String into bytes
+    public static void sendDataToBlackbox(String string) {
+        byte[] bytes = string.getBytes(); //converts entered String into bytes
+        try {
+            mmOutStream.write(bytes);
+        } catch (IOException e) {
+            Log.e("Send Error", "Unable to send message", e);
+        }
+    }
+    public static void sendDataToBlackbox(int integer) {
+        byte[] bytes = String.valueOf(integer).getBytes(); //converts entered String into bytes
         try {
             mmOutStream.write(bytes);
         } catch (IOException e) {

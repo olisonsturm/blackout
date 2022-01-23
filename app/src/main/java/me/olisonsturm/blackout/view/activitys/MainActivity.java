@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     break;
                 case R.id.deletePlayers:
                     //playerViewModel.deleteAllPlayers();
-                    ConnectedThread.sendDataToBlackbox("3");
+                    ConnectedThread.sendDataToBlackbox(3);
                     break;
             }
             return false;
