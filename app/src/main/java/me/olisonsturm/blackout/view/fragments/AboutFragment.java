@@ -17,8 +17,7 @@ public class AboutFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstance){
         View view = inflater.inflate(R.layout.fragment_about, container, false);
-        MainActivity.sendDataToBlackbox("3");
-        MainActivity.sendDataToBlackbox(3);
+
         return view;
     }
 
