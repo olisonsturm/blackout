@@ -84,9 +84,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     case ConnectedThread.MESSAGE_READ:
                         String arduinoMsg = msg.obj.toString(); // Read message from Arduino
-                        switch (arduinoMsg.toLowerCase()) {
+                        switch (arduinoMsg) {
                             case "3":
-                                banner.setTitle("Von Blackbox zurück bekommen: 3");
+                                toolbar.setSubtitle("receive: " + arduinoMsg);
                                 break;
                             case "led is turned off":
                                 //textViewInfo.setText("Arduino Message : " + arduinoMsg);
@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     break;
                 case R.id.deletePlayers:
                     //playerViewModel.deleteAllPlayers();
-                    ConnectedThread.sendDataToBlackbox(3);
+                    ConnectedThread.sendDataToBlackbox("3");
                     break;
             }
             return false;
