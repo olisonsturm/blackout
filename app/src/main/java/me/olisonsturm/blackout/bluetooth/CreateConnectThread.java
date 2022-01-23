@@ -14,13 +14,16 @@ public class CreateConnectThread extends Thread {
     private static final UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
     private final BluetoothSocket mmSocket;
-    private final Handler handler;
+    private Handler handler;
 
     private ConnectedThread connectedThread;
 
     public final static int CONNECTING_STATUS = 1; // used in bluetooth handler to identify message status
 
     public CreateConnectThread(BluetoothAdapter bluetoothAdapter, String address, Handler handler) {
+
+        this.handler = handler;
+
             /*
             Use a temporary object that is later assigned to mmSocket
             because mmSocket is final.
@@ -30,12 +33,10 @@ public class CreateConnectThread extends Thread {
 
         try {
             tmp = bluetoothDevice.createRfcommSocketToServiceRecord(uuid);
-
         } catch (IOException e) {
             Log.e("Bluetooth", "Socket's create() method failed", e);
         }
-        mmSocket = tmp;
-        this.handler = handler;
+        this.mmSocket = tmp;
     }
 
     public void run() {
@@ -46,13 +47,13 @@ public class CreateConnectThread extends Thread {
             // Connect to the remote device through the socket. This call blocks
             // until it succeeds or throws an exception.
             mmSocket.connect();
-            Log.e("Status", "Device connected");
+            Log.e("Bluetooth", "Device connected");
             handler.obtainMessage(CONNECTING_STATUS, 1, -1).sendToTarget();
         } catch (IOException connectException) {
             // Unable to connect; close the socket and return.
             try {
                 mmSocket.close();
-                Log.e("Status", "Cannot connect to device");
+                Log.e("Bluetooth", "Cannot connect to device");
                 handler.obtainMessage(CONNECTING_STATUS, -1, -1).sendToTarget();
             } catch (IOException closeException) {
                 Log.e("Bluetooth", "Could not close the client socket", closeException);

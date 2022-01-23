@@ -24,6 +24,7 @@ import com.google.android.material.navigation.NavigationView;
 
 
 import me.olisonsturm.blackout.R;
+import me.olisonsturm.blackout.bluetooth.ConnectedThread;
 import me.olisonsturm.blackout.bluetooth.CreateConnectThread;
 import me.olisonsturm.blackout.bluetooth.SelectDeviceActivity;
 import me.olisonsturm.blackout.model.PlayerViewModel;
@@ -31,14 +32,13 @@ import me.olisonsturm.blackout.view.fragments.GamesFragment;
 import me.olisonsturm.blackout.view.fragments.PlayerFragment;
 import me.olisonsturm.blackout.view.fragments.StatisticsFragment;
 
-import static me.olisonsturm.blackout.bluetooth.ConnectedThread.MESSAGE_READ;
-import static me.olisonsturm.blackout.bluetooth.CreateConnectThread.CONNECTING_STATUS;
-
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private Handler handler;
+
     private CreateConnectThread createConnectThread;
     private BluetoothAdapter bluetoothAdapter;
+
     private String deviceName = null;
     private String deviceAddress = null;
 
@@ -64,6 +64,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
+        handler = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case CreateConnectThread.CONNECTING_STATUS:
+                        switch (msg.arg1) {
+                            case 1:
+                                toolbar.setSubtitle("Connected to " + deviceName);
+                                // toolbar banner
+                                break;
+                            case -1:
+                                toolbar.setSubtitle("Device fails to connect");
+                                // toolbar banner
+                                break;
+                        }
+                        break;
+
+                    case ConnectedThread.MESSAGE_READ:
+                        String arduinoMsg = msg.obj.toString(); // Read message from Arduino
+                        switch (arduinoMsg.toLowerCase()) {
+                            case "led is turned on":
+                                //textViewInfo.setText("Arduino Message : " + arduinoMsg);
+                                break;
+                            case "led is turned off":
+                                //textViewInfo.setText("Arduino Message : " + arduinoMsg);
+                                break;
+                        }
+                        break;
+                }
+            }
+        };
+
         // If a bluetooth device has been selected from SelectDeviceActivity
         deviceName = getIntent().getStringExtra("deviceName");
         if (deviceName != null) {
@@ -84,14 +116,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //check to set bluetooth Icon
         if (!bluetoothAdapter.isEnabled()) {
             bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_off));
+        } else if (bluetoothAdapter.isDiscovering()) {
+            bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_discovering));
         } else {
             bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_on));
         }
-
-        if (bluetoothAdapter.isDiscovering()) {
-            bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_discovering));
-        }
-
 
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -103,7 +132,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PlayerFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_lobby);
         }
-
 
         toolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
@@ -123,37 +151,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return false;
         });
 
-        handler = new Handler(Looper.getMainLooper()) {
-            @Override
-            public void handleMessage(Message msg) {
-                switch (msg.what) {
-                    case CONNECTING_STATUS:
-                        switch (msg.arg1) {
-                            case 1:
-                                toolbar.setSubtitle("Connected to " + deviceName);
-                                // toolbar banner
-                                break;
-                            case -1:
-                                toolbar.setSubtitle("Device fails to connect");
-                                // toolbar banner
-                                break;
-                        }
-                        break;
-
-                    case MESSAGE_READ:
-                        String arduinoMsg = msg.obj.toString(); // Read message from Arduino
-                        switch (arduinoMsg.toLowerCase()) {
-                            case "led is turned on":
-                                //textViewInfo.setText("Arduino Message : " + arduinoMsg);
-                                break;
-                            case "led is turned off":
-                                //textViewInfo.setText("Arduino Message : " + arduinoMsg);
-                                break;
-                        }
-                        break;
-                }
-            }
-        };
     }
 
     @Override
