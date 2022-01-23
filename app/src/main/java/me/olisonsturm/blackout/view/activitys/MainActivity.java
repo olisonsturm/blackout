@@ -2,14 +2,12 @@ package me.olisonsturm.blackout.view.activitys;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -24,36 +22,30 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.navigation.NavigationView;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.UUID;
 
 import me.olisonsturm.blackout.R;
+import me.olisonsturm.blackout.bluetooth.CreateConnectThread;
 import me.olisonsturm.blackout.bluetooth.SelectDeviceActivity;
 import me.olisonsturm.blackout.model.PlayerViewModel;
-import me.olisonsturm.blackout.view.fragments.PlayerFragment;
 import me.olisonsturm.blackout.view.fragments.GamesFragment;
+import me.olisonsturm.blackout.view.fragments.PlayerFragment;
 import me.olisonsturm.blackout.view.fragments.StatisticsFragment;
+
+import static me.olisonsturm.blackout.bluetooth.ConnectedThread.MESSAGE_READ;
+import static me.olisonsturm.blackout.bluetooth.CreateConnectThread.CONNECTING_STATUS;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-
-    Toolbar toolbar;
-    NavigationView navigationView;
-    ActionMenuItemView bluetoothIcon;
-
-    public static Handler handler;
-    public static BluetoothSocket mmSocket;
-    public static ConnectedThread connectedThread;
-    public static CreateConnectThread createConnectThread;
-    public static BluetoothAdapter bluetoothAdapter;
+    private Handler handler;
+    private CreateConnectThread createConnectThread;
+    private BluetoothAdapter bluetoothAdapter;
     private String deviceName = null;
     private String deviceAddress = null;
 
-    private final static int CONNECTING_STATUS = 1; // used in bluetooth handler to identify message status
-    private final static int MESSAGE_READ = 2; // used in bluetooth handler to identify message update
+
+    private Toolbar toolbar;
+    private NavigationView navigationView;
+    private ActionMenuItemView bluetoothIcon;
 
     private DrawerLayout drawer;
     private PlayerViewModel playerViewModel;
@@ -85,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             the code will call a new thread to create a bluetooth connection to the
             selected device (see the thread code below)
              */
-            createConnectThread = new CreateConnectThread(bluetoothAdapter, deviceAddress);
+            createConnectThread = new CreateConnectThread(bluetoothAdapter, deviceAddress, handler);
             createConnectThread.start();
         }
 
@@ -208,22 +200,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivity(a);
     }
 
-    public static void sendDataToBlackbox(String string) {
-        connectedThread.write(string);
-    }
+//    public static void sendDataToBlackbox(String string) {
+//        connectedThread.write(string);
+//    }
+//
+//    public static void sendDataToBlackbox(int integer) {
+//        connectedThread.write(String.valueOf(integer));
+//    }
+/*
 
-    public static void sendDataToBlackbox(int integer) {
-        connectedThread.write(String.valueOf(integer));
-    }
+    */
+/* ============================ Thread to Create Bluetooth Connection =================================== *//*
 
-    /* ============================ Thread to Create Bluetooth Connection =================================== */
     public static class CreateConnectThread extends Thread {
 
         public CreateConnectThread(BluetoothAdapter bluetoothAdapter, String address) {
-            /*
+            */
+/*
             Use a temporary object that is later assigned to mmSocket
             because mmSocket is final.
-             */
+             *//*
+
             BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(address);
             BluetoothSocket tmp = null;
 
@@ -274,7 +271,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    /* =============================== Thread for Data Transfer =========================================== */
+    */
+/* =============================== Thread for Data Transfer =========================================== *//*
+
     public static class ConnectedThread extends Thread {
         private final BluetoothSocket mmSocket;
         private final InputStream mmInStream;
@@ -303,10 +302,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             // Keep listening to the InputStream until an exception occurs
             while (true) {
                 try {
-                    /*
+                    */
+/*
                     Read from the InputStream from Arduino until termination character is reached.
                     Then send the whole String message to GUI Handler.
-                     */
+                     *//*
+
                     buffer[bytes] = (byte) mmInStream.read();
                     String readMessage;
                     if (buffer[bytes] == '\n') {
@@ -324,7 +325,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
 
-        /* Call this from the main activity to send data to the remote device */
+        */
+/* Call this from the main activity to send data to the remote device *//*
+
         public void write(String input) {
             byte[] bytes = input.getBytes(); //converts entered String into bytes
             try {
@@ -334,7 +337,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
 
-        /* Call this from the main activity to shutdown the connection */
+        */
+/* Call this from the main activity to shutdown the connection *//*
+
         public void cancel() {
             try {
                 mmSocket.close();
@@ -342,6 +347,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
     }
+*/
 
 }
 
