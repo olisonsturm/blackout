@@ -24,6 +24,13 @@
             app:navigationIcon="@drawable/ic_menu"
             app:title="@string/app_name" />
 
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/banner"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/teal_200"
+            android:elevation="4dp"
+            app:title="keine Blackbox verbunden" />
 
         <FrameLayout
             android:id="@+id/fragment_container"

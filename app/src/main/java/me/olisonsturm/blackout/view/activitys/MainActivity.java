@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private Toolbar toolbar;
+    private Toolbar banner;
     private NavigationView navigationView;
     private ActionMenuItemView bluetoothIcon;
 
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         drawer = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.myToolbar);
+        banner = findViewById(R.id.banner);
         navigationView = findViewById(R.id.nav_view);
         bluetoothIcon = (ActionMenuItemView) findViewById(R.id.bluetoothCheck);
 
@@ -70,11 +72,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case CreateConnectThread.CONNECTING_STATUS:
                         switch (msg.arg1) {
                             case 1:
-                                toolbar.setSubtitle("Connected to " + deviceName);
+                                banner.setTitle("Connected to " + deviceName);
                                 // toolbar banner
                                 break;
                             case -1:
-                                toolbar.setSubtitle("Device fails to connect");
+                                banner.setTitle("Device fails to connect");
                                 // toolbar banner
                                 break;
                         }
@@ -101,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             // Get the device address to make BT Connection
             deviceAddress = getIntent().getStringExtra("deviceAddress");
             // Show progree and connection status
-            toolbar.setSubtitle("Connecting to " + deviceName + "...");
+            banner.setTitle("Connecting to " + deviceName + "...");
 
             /*
             This is the most important piece of code. When "deviceName" is found
