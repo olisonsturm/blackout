@@ -13,7 +13,7 @@ public class ConnectedThread extends Thread {
     private final BluetoothSocket mmSocket;
     private final Handler handler;
     private final InputStream mmInStream;
-    private final OutputStream mmOutStream;
+    private static OutputStream mmOutStream = null;
 
     public final static int MESSAGE_READ = 2; // used in bluetooth handler to identify message update
 
@@ -64,7 +64,7 @@ public class ConnectedThread extends Thread {
     }
 
     /* Call this from the main activity to send data to the remote device */
-    public void write(String input) {
+    public static void sendDataToBlackbox(String input) {
         byte[] bytes = input.getBytes(); //converts entered String into bytes
         try {
             mmOutStream.write(bytes);

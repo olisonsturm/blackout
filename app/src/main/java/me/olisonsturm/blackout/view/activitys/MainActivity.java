@@ -22,7 +22,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.navigation.NavigationView;
 
-
 import me.olisonsturm.blackout.R;
 import me.olisonsturm.blackout.bluetooth.ConnectedThread;
 import me.olisonsturm.blackout.bluetooth.CreateConnectThread;
@@ -145,7 +144,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                     break;
                 case R.id.deletePlayers:
-                    playerViewModel.deleteAllPlayers();
+                    //playerViewModel.deleteAllPlayers();
+                    ConnectedThread.sendDataToBlackbox("HUHU");
                     break;
             }
             return false;
@@ -196,6 +196,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(a);
     }
+
+
 
 //    public static void sendDataToBlackbox(String string) {
 //        connectedThread.write(string);
