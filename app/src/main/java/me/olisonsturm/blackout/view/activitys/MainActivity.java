@@ -33,7 +33,7 @@ import me.olisonsturm.blackout.R;
 import me.olisonsturm.blackout.bluetooth.SelectDeviceActivity;
 import me.olisonsturm.blackout.model.PlayerViewModel;
 import me.olisonsturm.blackout.view.fragments.PlayerFragment;
-import me.olisonsturm.blackout.view.fragments.SpieleFragment;
+import me.olisonsturm.blackout.view.fragments.GamesFragment;
 import me.olisonsturm.blackout.view.fragments.StatisticsFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -124,7 +124,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         startActivity(intent);
                     }
                     break;
-
                 case R.id.deletePlayers:
                     playerViewModel.deleteAllPlayers();
                     break;
@@ -140,9 +139,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         switch (msg.arg1) {
                             case 1:
                                 toolbar.setSubtitle("Connected to " + deviceName);
+                                // toolbar banner
                                 break;
                             case -1:
                                 toolbar.setSubtitle("Device fails to connect");
+                                // toolbar banner
                                 break;
                         }
                         break;
@@ -161,7 +162,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
         };
-
     }
 
     @Override
@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.nav_gaming:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SpieleFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new GamesFragment()).commit();
                 break;
 
             case R.id.nav_statistics:

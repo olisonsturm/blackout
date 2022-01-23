@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -21,8 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-
-import java.util.List;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 import me.olisonsturm.blackout.R;
@@ -109,7 +106,7 @@ public class PlayerFragment extends Fragment {
         }).attachToRecyclerView(recyclerView);
 
 
-        continueBtn.setOnClickListener(v -> getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new SpieleFragment()).commit());
+        continueBtn.setOnClickListener(v -> getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new GamesFragment()).commit());
 
 
         addBtn.setOnClickListener(v -> {
