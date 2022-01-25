@@ -55,6 +55,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:max="100"
+                android:indeterminateTint="@color/blue"
                 android:indeterminate="true"
                 android:visibility="invisible"
                 app:layout_anchor="@+id/banner"

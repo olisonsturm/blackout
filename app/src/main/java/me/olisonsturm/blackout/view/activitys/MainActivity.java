@@ -152,6 +152,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         banner.setOnClickListener(v -> {
             deviceName = "Blackbox";
             deviceAddress = "E4:5F:01:4C:4B:FB";
+            if (bannerText.getText().toString().contains("Verbunden") || bannerText.getText().toString().contains("Connected")) {
+                return;
+            }
             createBluetoothConnection(bluetoothAdapter, deviceAddress, handler);
         });
 
