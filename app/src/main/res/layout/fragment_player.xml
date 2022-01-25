@@ -8,9 +8,9 @@
 
     <RelativeLayout
         android:id="@+id/relativeLay"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="10dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

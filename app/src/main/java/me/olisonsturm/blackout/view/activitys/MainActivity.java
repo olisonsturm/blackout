@@ -2,29 +2,30 @@ package me.olisonsturm.blackout.view.activitys;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
-import android.content.ClipData;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.ActionMenuItemView;
-import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.concurrent.TimeUnit;
 
 import me.olisonsturm.blackout.R;
 import me.olisonsturm.blackout.bluetooth.ConnectedThread;
@@ -47,14 +48,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private Toolbar toolbar;
-    private Toolbar banner;
+    private LinearLayout banner;
+    private TextView bannerText;
+    private ProgressBar progressBar;
     private NavigationView navigationView;
     private ActionMenuItemView bluetoothIcon;
 
     private DrawerLayout drawer;
     private PlayerViewModel playerViewModel;
 
-    @SuppressLint({"NonConstantResourceId", "RestrictedApi"})
+    @SuppressLint({"NonConstantResourceId", "RestrictedApi", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.myToolbar);
         banner = findViewById(R.id.banner);
+        bannerText = findViewById(R.id.bannerText);
+        progressBar = findViewById(R.id.progressBar);
         navigationView = findViewById(R.id.nav_view);
         bluetoothIcon = findViewById(R.id.bluetoothCheck);
 
@@ -76,11 +81,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case CreateConnectThread.CONNECTING_STATUS:
                         switch (msg.arg1) {
                             case 1:
-                                banner.setTitle("Connected to " + deviceName);
+                                bannerText.setText("Verbunden mit " + deviceName);
+                                bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_on));
+                                progressBar.setVisibility(View.INVISIBLE);
                                 // toolbar banner
                                 break;
                             case -1:
-                                banner.setTitle("Device fails to connect");
+                                bannerText.setText("keine Blackbox verbunden");
+                                bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_off));
+                                progressBar.setVisibility(View.INVISIBLE);
                                 // toolbar banner
                                 break;
                         }
@@ -101,30 +110,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         };
 
+        bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_off));
+
         // If a bluetooth device has been selected from SelectDeviceActivity
         deviceName = getIntent().getStringExtra("deviceName");
         if (deviceName != null) {
             // Get the device address to make BT Connection
             deviceAddress = getIntent().getStringExtra("deviceAddress");
-            // Show progree and connection status
-            banner.setTitle("Connecting to " + deviceName + "...");
-
-            /*
-            This is the most important piece of code. When "deviceName" is found
-            the code will call a new thread to create a bluetooth connection to the
-            selected device (see the thread code below)
-             */
-            createConnectThread = new CreateConnectThread(bluetoothAdapter, deviceAddress, handler);
-            createConnectThread.start();
-        }
-
-        //check to set bluetooth Icon
-        if (!bluetoothAdapter.isEnabled()) {
-            bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_off));
-        } else if (bluetoothAdapter.isDiscovering()) {
-            bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_discovering));
-        } else {
-            bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_on));
+            createBluetoothConnection(bluetoothAdapter, deviceAddress, handler);
         }
 
         navigationView.setNavigationItemSelectedListener(this);
@@ -156,6 +149,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return false;
         });
 
+        banner.setOnClickListener(v -> {
+            deviceName = "Blackbox";
+            deviceAddress = "E4:5F:01:4C:4B:FB";
+            createBluetoothConnection(bluetoothAdapter, deviceAddress, handler);
+        });
+
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void createBluetoothConnection(BluetoothAdapter bluetoothAdapter, String deviceAddress, Handler handler) {
+        bluetoothIcon.setIcon(getDrawable(R.drawable.ic_bluetooth_discovering));
+        bannerText.setText("Verbindung mit " + deviceName + " wird hergestellt");
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        createConnectThread = new CreateConnectThread(bluetoothAdapter, deviceAddress, handler);
+        createConnectThread.start();
     }
 
     @Override

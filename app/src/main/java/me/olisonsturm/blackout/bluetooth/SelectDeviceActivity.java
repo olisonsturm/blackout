@@ -35,9 +35,9 @@ public class SelectDeviceActivity extends AppCompatActivity {
             // There are paired devices. Get the name and address of each paired device.
             for (BluetoothDevice device : pairedDevices) {
                 String deviceName = device.getName();
-                if (deviceName.equalsIgnoreCase("HC-05") || deviceName.equalsIgnoreCase("raspberrypi")) {
+                if (deviceName.equalsIgnoreCase("HC-05") || deviceName.equalsIgnoreCase("raspberrypi") || deviceName.equalsIgnoreCase("Blackbox")) {
                     String deviceHardwareAddress = device.getAddress(); // MAC address
-                    DeviceInfoModel deviceInfoModel = new DeviceInfoModel(deviceName, deviceHardwareAddress);
+                    DeviceInfoModel deviceInfoModel = new DeviceInfoModel("Blackbox", deviceHardwareAddress);
                     deviceList.add(deviceInfoModel);
                 }
             }
