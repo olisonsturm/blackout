@@ -15,6 +15,7 @@ import androidx.transition.ChangeTransform;
 import androidx.transition.TransitionManager;
 
 import me.olisonsturm.blackout.R;
+import me.olisonsturm.blackout.view.activitys.MainActivity;
 
 public class GamesFragment extends Fragment {
 
@@ -55,6 +56,7 @@ public class GamesFragment extends Fragment {
 
         card1.setOnClickListener(v -> {
             //Transition zu Spiel 1
+            getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new BottomSheetGame()).commit();
         });
 
         card2.setOnClickListener(v -> {
